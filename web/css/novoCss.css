@@ -1,0 +1,92 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 18/09/2014, 16:49:25
+    Author     : padrao
+*/
+
+.logoProd{
+    font-weight: 700;
+    font-family: Helvetica;
+    font-size: 60px;
+    text-shadow: 0 0 3px rgba(0,0,0,0.3);
+    padding-left: 5%;
+    font-variant: small-caps;
+    //padding: 0% 100% 2% 5%;
+}
+
+.refPag{
+    font-weight: 700;
+    font-family: Helvetica;
+    font-size: 15px;
+    text-shadow: 0 0 3px rgba(0,0,0,0.3);
+    padding: 1% 0% 0% 1%;
+    color: #fff;
+}
+.navMem{
+    float: left;
+    width: 30%;
+    padding: 4% 10% 10% 5%;
+}
+
+.navProjMem{
+    float: right;
+    width: 70%;
+    padding: 4% 5% 10px 0%;
+
+}
+
+.pgMem{
+    width: 90%;
+    height: 40%;
+    background-color: #606060;
+    border-radius: 10px 10px 0px 0px;
+    margin-left: 5%;
+}
+
+.navPgMem{
+    height: 100%;
+    float: left;
+    width: 90%;
+    border: 2px solid #606060;
+    margin-left: 5%;
+    border-radius: 0px 0px 10px 10px;
+}
+
+.fundoPagina{
+    float: right;
+    width: 100%;
+    background-color: #f0f0f0;
+}
+
+.link{
+    font-size: 16px;
+    text-align: center;
+}
+
+.menu{
+    background-color: #606060;
+    text-align:center;
+    color: #fff;
+    font-family: Helvetica;
+    padding: 1% 4% 1% 4%;
+    font-size: 15px;
+    border-radius: 10px 10px 0px 0px;
+    
+}
+
+.acessoNegado{
+    background-image: url('../imagens/acessoNegado.jpg');
+    background-position: center;
+}
+
+.imagemErro{
+    background-image: url('../imagens/cadErro.jpg');
+}
+
+.imagemUtf{
+    background-image: url('../imagens/utfpr.jpg');
+}

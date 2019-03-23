@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>       
+        <style type="text/css">    
+            @import url(css/ProDDSStyle.css); 
+            @import url(css/bootstrap-theme.min.css);
+            @import url(css/icones.css);            
+            @import url(css/bootstrap.css);
+        </style> 
+        <link rel="shortcut icon" href="imagens/header.png" />
+        <title>ProDDS - Logar</title>
+        <meta charset="UTF-8"/>
+    </h:head>
+    <h:body id="teste">
+        <div class="cabecalho">
+            <div class="index">
+                <h1 class="titulo"><span><a class="tituloProd" href="index.xhtml">ProDDS</a></span></h1>
+                <h3 class="sub">Autenticação</h3>
+            </div>
+        </div>
+        <div class="cadFormImagem">
+            <div class="cad">
+                <br/><br/>
+                <h:form>
+                    
+                    <p:messages autoUpdate="true"/>
+                    <p:panel menuTitle="Login" header="Login">
+                        <label for="nomeUsuario">Nome de usuário</label>
+                        
+                        <p:inputText class="form-control" id="nomeUsuario" value="#{loginBEAN.nomeUsuario}" pt:placeholder="Digite seu nome de usuário (e-mail)" required="true" requiredMessage="É necessário digitar seu e-mail"/>
+                        <br/><br/>
+                        <label for="senhaUsuario">Digite sua senha</label>
+                        <br/>
+                        <p:password placeholder="Digite sua senha" class="form-control" id="senhaUsuario" value="#{loginBEAN.senhaUsuario}" required="true" requiredMessage="É necessário digitar a sua senha"/>
+
+                        <br/><br/><br/>     
+                        
+                        <p:commandButton value="Login" class="btnLarg"  action="#{loginBEAN.salvar()}" validateClient="true"/>
+                    </p:panel>
+                    
+                    
+                </h:form>
+
+            </div>
+            <div>
+                <span><img src="imagens/login.jpg" class="figuraLogin"/></span>
+            </div>
+        </div>
+    </h:body>
+</html>

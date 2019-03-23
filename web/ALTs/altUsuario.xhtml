@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Página Pessoal</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style type="text/css">    
+            @import url('../css/novoCss.css');
+            @import url(../css/bootstrap.min.css);
+            @import url(../css/icones.css);
+            @import url(../css/bootstrap.css);
+        </style> 
+        <link rel="shortcut icon" href="../imagens/header.png" />
+    </h:head>
+    <h:body>
+        <c:if test="#{gerUsuarioBEAN.permissao() == true}">
+            <h:form>
+                <p:remoteCommand name="rc"  action="#{gerUsuarioBEAN.encerrarSecao()}"/>
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:outputLabel value="..::ProDDS::.." style="padding: 5px 30px 0px 30px; font-weight: 900;"/>
+                        <p:separator/>
+                        <p:commandLink value="Bem Vindo #{gerUsuarioBEAN.retornaUsuario().nomeusuario}"  style="padding: 5px 0px 0px 30px"/>
+                    </p:toolbarGroup>
+
+                    <p:toolbarGroup align="right">
+                        <p:menuButton value="Conta">
+                            <p:menuitem value="Perfil" url="ALTs/altUsuario.xhtml" />
+                            <p:menuitem value="Logout" onclick="rc()">
+                            </p:menuitem>
+                        </p:menuButton>
+                    </p:toolbarGroup>
+
+                </p:toolbar>
+            </h:form>
+            <a href="#{gerUsuarioBEAN.redirecionaUrl()}" style="text-decoration:none;">
+                <h1 class="logoProd">ProDDS</h1>
+            </a>
+            <div class="pgMem">
+                <p class="refPag">Perfil</p>
+            </div>
+            <div class="navPgMem">
+                <h:form style="padding: 20px 20px 20px 20px" id="form">
+                    <p:messages autoUpdate="true"/>
+                    <p:growl id="growl" showDetail="true" sticky="true" />
+                    <div style="width: 50%; float: left">
+                        <p:outputLabel value="Nome:"/><br/>
+                        <p:inputText value="#{gerUsuarioBEAN.nome}" style="width: 95%" placeholder="Digite seu nome" required="true" requiredMessage="É necessário digitar seu nome"/><br/><br/>
+                        <!--<p:outputLabel value="E-mail:"/><br/>
+                        <p:inputText value="#" style="width: 95%" placeholder="Digite seu e-mail" required="true" requiredMessage="E-mail inválido" validatorMessage="E-mail inválido">
+                            <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                        </p:inputText><br/><br/>-->
+                    </div>
+                    <div style="width: 50%; float: right">
+                        <p:outputLabel value="Senha:" style="width: 100%; float: left"/><br/>
+                        <p:password value="#{gerUsuarioBEAN.senha}" feedback="true" style="width: 100%; float: left"/><br/><br/><br/>
+                        <p:outputLabel value="Nova senha:" style="width: 100%; float: left"/><br/>
+                        <p:password value="#{gerUsuarioBEAN.newPass}"  feedback="true" style="width: 100%; float: left">
+                        </p:password><br/><br/>
+                    </div>
+                    <div style="width: 50%; float: left; padding-bottom: 10px;">
+                        <p:commandButton value="Alterar" icon="ui-icon-pencil" action="#{gerUsuarioBEAN.alterar}"/>
+                        <p:commandButton value="Excluir Conta" icon="ui-icon-trash" oncomplete="dialog.show()"/>
+                    </div>
+                    <p:dialog header="Confirmação" widgetVar="dialog" width="45%" height="40%">
+                        <div>
+                            <img src="../imagens/exclamacao.jpg" style="width: 10%; float: left"/>
+                           <p style="font-size: 20px; text-align: center; color: #ff0000; width: 80%; float: right; padding-right: 10%;">Atenção</p>
+                           <p style="text-align: center; width: 80%; float: right;  padding-right: 10%">Deseja realmente excluir o Projeto?</p>
+                        </div>
+                        <div>
+                            <p:commandButton value="Sim" action="#"  icon="ui-icon-check" style="text-align: center; float: left; width: 30%"/>
+                            <p:commandButton value="Não" oncomplete="dialog.hide()" icon="ui-icon-cancel" style="text-align: center; float: right; width: 30%"/>
+                        </div>
+                    </p:dialog>
+                </h:form>
+            </div>
+            
+        </c:if>
+        
+        <c:if test="#{gerUsuarioBEAN.permissao() == false}">
+            <a href="../index.xhtml" style="text-decoration:none;">
+                <h1 class="logoProd">ProDDS</h1>
+            </a>
+            <div class="pgMem">
+                <p class="refPag">Perfil</p>
+            </div>
+            <div class="navPgMem">
+                <span><img class="acessoNegado" src="../imagens/acessoNegado.jpg" style="text-align: center"/></span>
+            </div>
+        </c:if>
+    </h:body>
+</html>

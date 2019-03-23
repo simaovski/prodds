@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Página Pessoal</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style type="text/css">    
+            @import url('../css/novoCss.css');
+            @import url(../css/bootstrap.min.css);
+            @import url(../css/icones.css);
+            @import url(../css/bootstrap.css);
+        </style> 
+        <link rel="shortcut icon" href="../imagens/header.png" />
+    </h:head>
+    <h:body>
+        <c:if test="#{relatorioAdmBEAN.permissao() == true}">
+            <h:form>
+                <p:remoteCommand name="rc"  action="#{relatorioAdmBEAN.encerrarSecao()}"/>
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:outputLabel value="..::ProDDS::.." style="padding: 5px 30px 0px 30px; font-weight: 900;"/>
+                        <p:separator/>
+                        <p:commandLink value="Bem Vindo #{relatorioAdmBEAN.retornaUsuario().nomeusuario}"  style="padding: 5px 0px 0px 30px"/>
+                    </p:toolbarGroup>
+
+                    <p:toolbarGroup align="right">
+                        <p:menuButton value="Conta">
+                            <p:menuitem value="Perfil" url="ALTs/altUsuario.xhtml" />
+                            <p:menuitem value="Logout" onclick="rc()">
+                            </p:menuitem>
+                        </p:menuButton>
+                    </p:toolbarGroup>
+
+                </p:toolbar>
+            </h:form>
+            <a href="../pgPessoalAdm.xhtml" style="text-decoration:none;">
+                <h2 class="logoProd">#{relatorioAdmBEAN.p.nomeprojeto}</h2>
+                <h4 class="logoProd" style="font-size: 12px">Descrição: #{relatorioAdmBEAN.p.descricao}</h4>
+            </a>
+            <div class="pgMem">
+                <p class="refPag">Gerenciar Projeto</p>
+            </div>
+            <div class="navPgMem">
+                <h:form id="form">
+                    <p:tabView orientation="left" style="padding: 0px 0px 0px 0px">
+                        <p:tab title="Status" titletip="Concluído/Cancelado/Desenvolvimento">
+                            <c:if test="#{relatorioAdmBEAN.retornaEstado() == 0}">
+                                <h5>Atualmente o Status do projeto #{relatorioAdmBEAN.p.nomeprojeto} é:</h5> 
+                                <h5 style="color: #0000ff;">Em desenvolvimento</h5>
+                                <p:outputLabel style="padding-right: 10px">Alterar status do projeto: </p:outputLabel>
+                                <p:selectOneMenu value="#{relatorioAdmBEAN.estado}">
+                                    <f:selectItem itemLabel="Concluído" itemValue="2"/>                                    
+                                    <f:selectItem itemLabel="Cancelado" itemValue="3"/>
+                                </p:selectOneMenu>
+                                <p:commandButton value="Alterar" oncomplete="dialog1.show()" update="d1"/>
+                                <p:dialog widgetVar="dialog1" id="d1" header="Atenção" width="400px" height="200px" modal="true">
+                                    <c:if test="#{relatorioAdmBEAN.estado == 2}">
+                                        <p:outputLabel>
+                                            O Status Concluído significa que o projeto foi concluído. Após a confirmação
+                                            desta operação ela não poderá ser desfeita.
+                                        </p:outputLabel>
+                                    </c:if>
+                                    <c:if test="#{relatorioAdmBEAN.estado == 3}">
+                                        O Status Cancelado significa que o projeto foi concluído, porém sem desenvolver todas
+                                        as atividades planejadas. Esta ação poderá ser desfeita, porém será criado uma nova instância do projeto.
+                                    </c:if>
+                                    <p:commandButton value="Confirmar" action="#{relatorioAdmBEAN.editarStatus}"/>
+                                    <p:commandButton value="Cancelar"/>
+                                </p:dialog>
+                            </c:if>
+                            <c:if test="#{relatorioAdmBEAN.retornaEstado() == 1}">
+                                <h5>Atualmente o Status do projeto #{relatorioAdmBEAN.p.nomeprojeto} é:</h5> 
+                                <h5 style="color: #0000ff;">Em desenvolvimento</h5>
+                                <p:outputLabel style="padding-right: 10px">Alterar status do projeto: </p:outputLabel>
+                                <p:selectOneMenu value="#{relatorioAdmBEAN.estado}">
+                                    <f:selectItem itemLabel="Concluído" itemValue="2"/>                                    
+                                    <f:selectItem itemLabel="Cancelado" itemValue="3"/>
+                                </p:selectOneMenu>
+                                <p:commandButton value="Alterar" oncomplete="dialog1.show()" update="d1"/>
+                                <p:dialog widgetVar="dialog1" id="d1" header="Atenção" width="400px" height="200px" modal="true">
+                                    <c:if test="#{relatorioAdmBEAN.estado == 2}">
+                                        <p:outputLabel>
+                                            O Status Concluído significa que o projeto foi concluído. Após a confirmação
+                                            desta operação ela não poderá ser desfeita.
+                                        </p:outputLabel>
+                                    </c:if>
+                                    <c:if test="#{relatorioAdmBEAN.estado == 3}">
+                                        O Status Cancelado significa que o projeto foi concluído, porém sem desenvolver todas
+                                        as atividades planejadas. Esta ação poderá ser desfeita, porém será criado uma nova instância do projeto.
+                                    </c:if>
+                                    <p:commandButton value="Confirmar" action="#{relatorioAdmBEAN.editarStatus}"/>
+                                    <p:commandButton value="Cancelar"/>
+                                </p:dialog>
+                            </c:if>                            
+                            <c:if test="#{relatorioAdmBEAN.retornaEstado() == 2}">
+                                O projeto #{relatorioAdmBEAN.p.nomeprojeto} já foi
+                                <h5 style="color: #00ff00;">Concluído</h5>
+                            </c:if>
+                            <c:if test="#{relatorioAdmBEAN.retornaEstado() == 3}">
+                                Atualmente o Status do projeto #{relatorioAdmBEAN.p.nomeprojeto} é: 
+                                <h5 style="color: #ff0000">Cancelado</h5>
+                                <p:selectOneMenu value="#{relatorioAdmBEAN.estado}">
+                                    <f:selectItem itemLabel="Reiniciar projeto" itemValue="4"/>                                    
+                                </p:selectOneMenu>
+                                <p:commandButton value="Alterar" oncomplete="dialog2.show()" update="d2"/>
+                                <p:dialog widgetVar="dialog2" id="d2" header="Atenção" width="400px" height="200px" modal="true">
+                                    <c:if test="#{relatorioAdmBEAN.estado == 4}">
+                                        <p:outputLabel>
+                                            Esta ação acarretará a criação de uma nova instância do projeto. Dessa forma
+                                            todas as atividades, gerentes, equipes e colaboradores serão recuperados. Porém,
+                                            as atividades e artefatos já DESENVOLVIDOS produzidos não
+                                        </p:outputLabel>
+                                    </c:if>                                    
+                                    <p:commandButton value="Confirmar" action="#{relatorioAdmBEAN.editarStatus}"/>
+                                    <p:commandButton value="Cancelar"/>
+                                </p:dialog>
+                            </c:if>
+                        </p:tab>
+                        <p:tab title="Dados Gerais " titletip="Informações relevantes sobre o andamento do projeto">
+                            <p:panel header="Informações sobre o projeto" style="margin-bottom:20px">
+                                <p:outputPanel deferred="true">
+                                    <h4 style="font-weight: 900">Data de Início</h4>
+                                    <p>#{relatorioAdmBEAN.p.datacriacao}</p>
+                                    
+                                    <h4 style="font-weight: 900">Dias Trabalhados</h4>
+                                    <p>#{relatorioAdmBEAN.diasTrabalhados()}</p>
+                                    
+                                    <h4 style="font-weight: 900">Data Final</h4>
+                                    <p>#{relatorioAdmBEAN.retornaDataFinal()}</p>
+                                    
+                                    <h4 style="font-weight: 900">Total de Gerentes</h4>
+                                    <p>#{relatorioAdmBEAN.totalGerentes()}</p>
+                                    
+                                    <h4 style="font-weight: 900">Status</h4>
+                                    <p>#{relatorioAdmBEAN.retornaStatus()}</p>
+                                    <p:commandButton oncomplete="dialog1.show()" value="teste"/>
+                                </p:outputPanel>
+                            </p:panel>
+                        </p:tab>
+                        <p:tab title="Gerentes" titletip="Gerentes de Equipes">
+                            Gerentes de Equipe do Projeto
+                            <p:dataTable value="#{relatorioAdmBEAN.listaGer}" var="ger" emptyMessage="Nenhum gerente foi cadastrado">
+                                <p:column headerText="Nome do Gerente" style="text-align: center">
+                                    <p:outputLabel value="#{ger.idusuariogerente.nomeusuario}"/>
+                                </p:column>
+                                <p:column headerText="Nome da Equipe" style="text-align: center">
+                                    <p:outputLabel value="#{relatorioAdmBEAN.retornaEquipe(ger)}"/>
+                                </p:column>
+                                <p:column headerText="Descrição" style="text-align: justify">
+                                    <p:outputLabel value="#{relatorioAdmBEAN.retornaDescricao(ger)}"/>
+                                </p:column>
+                                <p:column headerText="Atividades" style="text-align: justify">
+                                    <p:outputLabel value="#{relatorioAdmBEAN.atividades(ger)}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="Atividades desenvolvidas" titletip="Atividades executadas/execução do Ciclo de Vida cadastrado">
+                            Atividades utilizadas no projeto
+                            <p:dataTable value="#{relatorioAdmBEAN.listaAtvDes}" var="atv" emptyMessage="Sem registros">
+                                <p:column headerText="Equipe" style="text-align: center">
+                                    <p:outputLabel value="#{atv.idequipe.nomeequipe}"/>
+                                </p:column>
+                                <p:column headerText="Gerente" style="text-align: center">
+                                    <p:outputLabel value="#{atv.idequipe.idgerente.nomeusuario}"/>
+                                </p:column>
+                                <p:column headerText="Colaborador" style="text-align: center">
+                                    <p:outputLabel value="#{atv.idmembro.nomeusuario}"/>
+                                </p:column>
+                                <p:column headerText="Atividade" style="text-align: center"> 
+                                    <p:outputLabel value="#{relatorioAdmBEAN.retornaAtividade(atv)}"/>
+                                </p:column>
+                                <p:column headerText="Fase" style="text-align: center"> 
+                                    <p:outputLabel value="#{relatorioAdmBEAN.retornaFase(atv)}"/>
+                                </p:column>
+                                <p:column headerText="Status" style="text-align: center"> 
+                                    <p:outputLabel value="#{relatorioAdmBEAN.retornaStatus(atv)}"/>
+                                </p:column>
+                                <p:column headerText="Cadastrado por" style="text-align: center"> 
+                                    <p:outputLabel value="#{atv.idusuariocadatv.nomeusuario}"/>
+                                </p:column>
+                            </p:dataTable><br/><br/>
+                        </p:tab>
+                        <p:tab title="Atividades Ociosas" titletip="Atividades cadastradas no Ciclo de Vida que não foram utilizadas">
+                            Atividades não utilizadas (Cadastradas por você)
+                            <p:dataTable value="#{relatorioAdmBEAN.listaAtividades}" var="atv" emptyMessage="Sem registros">
+                                <p:column headerText="Nome" style="text-align: center">
+                                    <p:outputLabel value="#{atv.nomeatividade}"/>
+                                </p:column>
+                                <p:column headerText="Descrição" style="text-align: center">
+                                    <p:outputLabel value="#{atv.descricaoatividade}"/>
+                                </p:column>
+                                <p:column headerText="Fase" style="text-align: center">
+                                    <p:outputLabel value="#{atv.idfase.nomefase}"/>
+                                </p:column>
+                            </p:dataTable><br/><br/>
+                            Atividades não utilizadas (Cadastradas por gerentes)
+                            <p:dataTable value="#{relatorioAdmBEAN.listaAtividadesGerente}" var="atv" emptyMessage="Sem registros">
+                                <p:column headerText="Nome" style="text-align: center">
+                                    <p:outputLabel value="#{atv.nomeatividade}"/>
+                                </p:column>
+                                <p:column headerText="Descrição" style="text-align: center">
+                                    <p:outputLabel value="#{atv.descricao}"/>
+                                </p:column>
+                                <p:column headerText="Fase" style="text-align: center">
+                                    <p:outputLabel value="#{atv.idfase.nomefase}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="Gerente do Projeto" titletip="Responsável por definir a fase atual do projeto">
+                            <c:if test="#{relatorioAdmBEAN.verificaGerenteProcesso() == 0}">
+                                <p:panel header="Responsável por gerenciar as fases de desenvolvimento do projeto" style="margin-bottom:20px">
+                                    <p:outputPanel deferred="true">
+                                        <h4>É necessário ter cadastrado pelo menos 1 Gerente de Equipe para cadastrar um Gerente de Processo</h4>
+                                        <p:commandLink>Cadastrar Gerente de Equipe</p:commandLink>
+                                    </p:outputPanel>
+                                </p:panel>
+                            </c:if>
+                            <c:if test="#{relatorioAdmBEAN.verificaGerenteProcesso() == 1}">
+                                <p:panel header="Cadastrar Gerente de Processo" style="margin-bottom:20px">
+                                    <h4>Selecione o Gerente: </h4>
+                                    <p:selectOneMenu value="#{relatorioAdmBEAN.ger}">
+                                        <f:selectItems value="#{relatorioAdmBEAN.retornaListaGerente()}" 
+                                                       var="ger" 
+                                                       itemLabel="#{ger.idusuariogerente.nomeusuario}" 
+                                                       itemValue="#{ger.idusuariogerente.id}" >
+                                        </f:selectItems>
+                                    </p:selectOneMenu><br/>
+                                    <p:commandButton value="Selecionar" action="#{relatorioAdmBEAN.salvarGerPro()}"/>
+                                </p:panel>
+                            </c:if>
+                            <c:if test="#{relatorioAdmBEAN.verificaGerenteProcesso() == 2}">
+                                <p:panel header="Gerente de Processo" style="margin-bottom:20px">
+                                    <h4>#{relatorioAdmBEAN.retornaGerenteProcesso().idgerente.nomeusuario}</h4>
+                                    <h5>#{relatorioAdmBEAN.retornaGerenteProcesso().idgerente.emailusuario}</h5>
+                                </p:panel>
+                            </c:if>
+                        </p:tab>
+                         <p:tab title="Gerenciar" titletip="Alterar/Remover Projeto">
+                             <p:outputLabel value="Projeto:"/><br/>
+                             <p:inputText value="#{relatorioAdmBEAN.p.nomeprojeto}"/><br/><br/>
+                             <p:outputLabel value="Descrição:"/><br/>
+                             <p:inputTextarea value="#{relatorioAdmBEAN.p.descricao}" style="width: 90%; height: 50%"/><br/><br/>
+                             <p:commandButton value="Alterar" icon="ui-icon-pencil" action="#{relatorioAdmBEAN.alterar()}"/>
+                             <p:commandButton value="Remover" icon="ui-icon-trash" oncomplete="dialog.show()"/>
+                             <p:dialog header="Confirmação" widgetVar="dialog" width="45%" height="40%">
+                                 <div>
+                                     <img src="../imagens/exclamacao.jpg" style="width: 10%; float: left"/>
+                                    <p style="font-size: 20px; text-align: center; color: #ff0000; width: 80%; float: right; padding-right: 10%;">Atenção</p>
+                                    <p style="text-align: center; width: 80%; float: right;  padding-right: 10%">Deseja realmente excluir o Projeto? #{relatorioAdmBEAN.p.nomeprojeto}</p>
+                                 </div>
+                                 <div>
+                                     <p:commandButton value="Sim" action="#{relatorioAdmBEAN.remover()}" oncomplete="dialog.hide()"  icon="ui-icon-check" style="text-align: center; float: left; width: 30%"/>
+                                     <p:commandButton value="Não" oncomplete="dialog.hide()" icon="ui-icon-cancel" style="text-align: center; float: right; width: 30%"/>
+                                 </div>
+                             </p:dialog>
+                        </p:tab>
+                    </p:tabView>
+                </h:form>
+            </div>
+            
+        </c:if>
+        
+        <c:if test="#{pgAdmBEAN.permissao() == false}">
+            <div class="cabecalho">
+                <div class="index">
+                    <h1 class="titulo"><span><a class="tituloProd" href="#{statusProjetoBEAN.direcionaUrl()}">ProDDS</a></span></h1>
+                    <h3 class="sub">Administrador</h3>
+                </div>
+            </div>
+            <div>
+                <span><img class="acessoNegado" src="imagens/acessoNegado.jpg"/></span>
+            </div>
+        </c:if>
+    </h:body>
+</html>

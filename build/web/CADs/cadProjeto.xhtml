@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Cadastrar Projeto</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style type="text/css">    
+            @import url('../css/novoCss.css'); 
+            @import url(../css/bootstrap.min.css);
+            @import url(../css/icones.css);
+            @import url(../css/bootstrap.css);
+        </style> 
+        <link rel="shortcut icon" href="../imagens/header.png" />
+    </h:head>
+    <h:body>
+        <c:if test="#{projetoBEAN.permissaoAdm() == true}">
+            <h:form>
+                <p:remoteCommand name="rc"  action="#{projetoBEAN.encerrarSecao()}"/>
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:outputLabel value="..::ProDDS::.." style="padding: 5px 30px 0px 30px; font-weight: 900;"/>
+                        <p:separator/>
+                        <p:commandLink value="Bem Vindo #{projetoBEAN.retornaUsuario().nomeusuario}"  style="padding: 5px 0px 0px 30px"/>
+                    </p:toolbarGroup>
+
+                    <p:toolbarGroup align="right">
+                        <p:menuButton value="Conta">
+                            <p:menuitem value="Perfil" url="ALTs/altUsuario.xhtml" icon="ui-icon-person"/>
+                            <p:menuitem value="Logout" onclick="rc()" icon="ui-icon-power">
+                            </p:menuitem>
+                        </p:menuButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+            </h:form>
+            <a href="../pgPessoalAdm.xhtml" style="text-decoration:none;" class="projDesc">
+                <h2 class="logoProd">ProDDS</h2>
+            </a>
+            <div class="pgMem">
+                <p class="refPag">Cadastrar Novo Projeto</p>
+            </div>
+            <h:form class="navPgMem" style="padding: 30px 30px 30px 30px">
+                <p:messages autoUpdate="true"/>
+                <h:outputLabel value="Digite o nome do projeto" />
+                <p:inputText placeholder="Digite o nome do projeto" class="form-control" value="#{projetoBEAN.nomeProjeto}" required="true" requiredMessage="É necessário digitar o nome do Projeto"/>
+                <br/>
+                <h:outputLabel value="Descrição do projeto" />
+                <p:inputTextarea placeholder="Fale sobre o projeto" class="form-control" value="#{projetoBEAN.descricao}" required="true" requiredMessage="É necessário digitar a descrição do Projeto"/>
+                <br/>
+                <h:outputLabel value="Selecione a data de início do projeto" />
+                <p:calendar placeholder="Selecione a data" class="form-control" value="#{projetoBEAN.dataCriacao}" required="true" requiredMessage="É necessário selecionar alguma data de criação"/>
+                <br/>
+                <p:outputLabel value="Selecione o ciclo de desenvolvimento:" /><br/>
+                <p:selectOneMenu required="true" requiredMessage="Selecione um ciclo de desenvolvimento" value="#{projetoBEAN.processo}">
+                    <f:selectItems value="#{projetoBEAN.processos}" var="proc" itemLabel="#{proc.nomeprocesso}" itemValue="#{proc.id}"/>
+                </p:selectOneMenu><br/><br/>
+                <p:commandButton icon="ui-icon-check" 
+                                 value="Cadastrar" 
+                                 action="#{projetoBEAN.selecionarProcesso}"
+                                 validateClient="true" 
+                                 ajax="true"
+                                 update="dialog"
+                                 oncomplete="dialogProj.show()"/>
+                <p:dialog header="Projeto" id="dialog" widgetVar="dialogProj" modal="true">
+                    <c:if test="#{projetoBEAN.verifica == false}">
+                        <div style="width: 400px;">
+                            <img src="../imagens/erro.jpg" width="10%" height="10%" style="float: left"/>
+                            <p:outputLabel value="Erro! Você já cadastrou um Projeto com este nome/ Preencha todos os campos obrigatórios" style="float: right; width: 85%; color: #c9302c"/>
+                        </div>
+                    </c:if>
+                    <c:if test="#{projetoBEAN.verifica == true}">
+                        <img src="../imagens/acertoErrado.jpg" width="10%" height="10%" style="float: left"/>
+                        <p:outputLabel value="Projeto cadastrado com sucesso!"/>
+                    </c:if>
+                </p:dialog>
+                <br/>
+            </h:form>
+        </c:if>   
+        <c:if test="#{projetoBEAN.permissaoAdm() == false}">
+            <div class="cabecalho">
+                <div class="index">
+                    <h1 class="titulo"><span><a class="tituloProd" href="#{projetoBEAN.direcionaUrl()}">ProDDS</a></span></h1>
+                    <h3 class="sub">Cadastrar Projeto</h3>
+                </div>
+            </div>
+            <div>
+                <span><img class="acessoNegado" src="../imagens/acessoNegado.jpg"/></span>
+            </div>
+        </c:if>
+    </h:body>
+</html>

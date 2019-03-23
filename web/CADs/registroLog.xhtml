@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Registrar Log</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style type="text/css">    
+            @import url('../css/novoCss.css');
+            @import url(../css/bootstrap.min.css);
+            @import url(css/icones.css);
+            @import url(../css/bootstrap.css);
+        </style> 
+        <link rel="shortcut icon" href="../imagens/header.png" />
+    </h:head>
+    <h:body>
+        <!--PRIMEIRO CONJUNTO DE IFs: é usuário/gerente e está em um projeto em DESENVOLVIMENTO-->
+        <c:if test="#{registroLogBEAN.permissao() == true}">
+            <c:if test="#{registroLogBEAN.permissaoAtividades() == 0}">
+            <div class="fundoPagina">
+                <h:form>
+                    <p:remoteCommand name="rc"  action="#{registroLogBEAN.encerrarSecao()}"/>
+                    <p:toolbar>
+                        <p:toolbarGroup align="left">
+                            <p:outputLabel value="..::ProDDS::.." style="padding: 2px 10px 2px 30px"/>
+                            <p:separator/>
+                            <p:commandLink value="Bem Vindo #{registroLogBEAN.retornaUsuario().nomeusuario}"  style="padding: 5px 0px 0px 30px"/>
+                            <p:separator/>
+                        </p:toolbarGroup>
+
+                        <p:toolbarGroup align="right">
+                            <p:menuButton value="Conta">
+                                <p:menuitem value="Perfil" url="ALTs/altUsuario.xhtml" icon="ui-icon-person"/>
+                                <p:menuitem value="Logout" onclick="rc()" icon="ui-icon-power">
+                                </p:menuitem>
+                            </p:menuButton>
+                        </p:toolbarGroup>
+
+                    </p:toolbar>
+                </h:form>
+                <a href="../pgPessoalMem.xhtml" style="text-decoration:none;" class="projDesc">
+                    <h2 class="logoProd">#{registroLogBEAN.p.nomeprojeto}</h2>
+                    <h4 class="logoProd" style="font-size: 12px">Descrição: #{registroLogBEAN.p.descricao}</h4>
+                </a>
+                <div class="pgMem">
+                    <p class="refPag">Cadastrar Log no projeto: #{registroLogBEAN.p.nomeprojeto}</p>
+                </div>  
+                <div class="navPgMem">
+                    <h:form style="padding: 10px 10px 10px 10px">
+                        <h5 class="logProd">Cadastrar Log</h5>
+                        <p:dataTable value="#{registroLogBEAN.listaAtv}" var="atividades" emptyMessage="Nenhuma atividade foi cadastrada para você nesse projeto">
+                            <p:column headerText="Atividade">
+                                <p:outputLabel value="#{registroLogBEAN.retornaAtividade(atividades)}" class="logoProd"/>
+                            </p:column>
+                            <p:column headerText="Descrição">
+                                <p:outputLabel value="#{registroLogBEAN.retornaDescricao(atividades)}" class="logoProd"/>
+                            </p:column>
+                            <p:column headerText="Equipe">
+                                <p:outputLabel value="#{atividades.idequipe.nomeequipe}" class="logoProd"/>
+                            </p:column>
+                            <p:column headerText="Registrar">
+                                <p:commandButton oncomplete="dialogInicio.show()" update="dialog" value="Iniciar" action="#{registroLogBEAN.registrarLog(atividades)}"/>
+                                <p:dialog widgetVar="dialogInicio" id="dialog" modal="true" class="logoProd" style="padding-left: 0%; width: 300px; height: 400px" closeOnEscape="false" header="#{registroLogBEAN.nomeAtividade}">
+                                    <div style="alignment-adjust: central">
+                                        <p:outputLabel class="logoProd" style="padding-left: 0%">Atividade iniciada</p:outputLabel><br/>
+                                        <p:outputLabel value="Hora de início: #{registroLogBEAN.hora}" class="logoProd" style="padding-left: 0%"/><br/>
+                                        <p:outputLabel id="txt_count" value="Hora atual: #{registroLogBEAN.number}" class="logoProd" style="padding-left: 0%"/>
+                                        <p:poll listener="#{registroLogBEAN.increment}" update="txt_count" /><br/>
+                                        <!--<p:selectBooleanButton onLabel="Reiniciar" 
+                                                               offLabel="Pausar" 
+                                                               onIcon="ui-icon-check" 
+                                                               offIcon="ui-icon-close" 
+                                                               style="width: 100%">
+                                            <p:ajax listener="{registroLogBEAN.btnFim}" oncomplete="btn.disable='true'"/>
+                                        </p:selectBooleanButton>-->
+                                        <p:commandButton id="btn" value="Terminar Atividade" update="@all" action="#{registroLogBEAN.registrarFim}" disabled="#{registroLogBEAN.btn}"></p:commandButton>
+                                        <p:remoteCommand name="atualizaBtn" update="btn"/>
+                                    </div>
+                                </p:dialog>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                    <br/><br/>
+                    <h:form enctype="multipart/form-data" style="padding: 10px 10px 10px 10px">
+                        <p:messages autoUpdate="true"/>
+                        <h5 class="logProd" style="font-size: 15px">Enviar artefato produzido</h5>
+                        <p:fileUpload value="#{registroLogBEAN.file}" mode="simple" disabled="false" required="true" requiredMessage="Selecione um arquivo"/>
+                        <h5 class="logoProd" style="font-size: 15px">Atividade</h5>
+                        <p:selectOneMenu value="#{registroLogBEAN.idAtvArtefato}" required="true" requiredMessage="Selecione uma atividade">
+                            <f:selectItems value="#{registroLogBEAN.listaAtv}" var="atv" itemLabel="#{registroLogBEAN.retornaAtividade(atv)}" itemValue="#{atv.id}"/>
+                        </p:selectOneMenu><br/>
+                        <p:commandButton value="Enviar" action="#{registroLogBEAN.upload()}" ajax="false" validateClient="true"/>
+                        <br/><br/>
+                    </h:form>
+                    
+                </div>
+            </div>
+            </c:if>
+            <c:if test="#{registroLogBEAN.permissaoAtividades() == 1}">
+                <div class="fundoPagina">
+                    <a href="../pgPessoalMem.xhtml" style="text-decoration:none;" class="projDesc">
+                    <h2 class="logoProd">#{registroLogBEAN.p.nomeprojeto}</h2>
+                    <h4 class="logoProd" style="font-size: 12px">Descrição: #{registroLogBEAN.p.descricao}</h4>
+                </a>
+                <div class="pgMem">
+                    <p class="refPag">Cadastrar Log no projeto: #{registroLogBEAN.p.nomeprojeto}</p>
+                </div>  
+                <div class="navPgMem" style="background-color: #fff; text-align: center">
+                    <h3 class="logoProd" style="font-size: 25px">Esse projeto não pode ser iniciado pois não foi cadastrado nenhum gerente de processo</h3>
+                    <img src="../imagens/acessoNegado.jpg"/>
+                    </div>
+                </div>
+            </c:if>
+        </c:if>
+    </h:body>
+</html>

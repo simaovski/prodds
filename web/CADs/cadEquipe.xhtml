@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>       
+        <style type="text/css">    
+            @import url('../css/novoCss.css');
+            @import url(../css/bootstrap.min.css);
+            @import url(css/icones.css);
+            @import url(../css/bootstrap.css);
+        </style> 
+        <link rel="shortcut icon" href="../imagens/header.png" />
+        <title>Cadastrar Equipe</title>
+        <meta charset="UTF-8"/>
+    </h:head>
+    <h:body>
+        <c:if test="#{equipeBEAN.permissao() == true}">
+            <c:if test="#{equipeBEAN.verificarEquipe() == true}">
+                <h:form>
+                    <p:remoteCommand name="rc"  action="#{equipeBEAN.encerrarSecao()}"/>
+                    <p:toolbar>
+                        <p:toolbarGroup align="left">
+                            <p:outputLabel value="..::ProDDS::.." style="padding: 5px 30px 0px 30px; font-weight: 900;"/>
+                            <p:separator/>
+                            <p:commandLink value="Bem Vindo #{equipeBEAN.retornaUsuario().nomeusuario}"  style="padding: 5px 0px 0px 30px"/>
+                        </p:toolbarGroup>
+
+                        <p:toolbarGroup align="right">
+                            <p:menuButton value="Conta">
+                                <p:menuitem value="Perfil" url="ALTs/altUsuario.xhtml" icon="ui-icon-person"/>
+                                <p:menuitem value="Logout" onclick="rc()" icon="ui-icon-power">
+                                </p:menuitem>
+                            </p:menuButton>
+                        </p:toolbarGroup>
+
+                    </p:toolbar>
+                </h:form>
+                <a href="../pgPessoalGer.xhtml" style="text-decoration:none;" class="projDesc">
+                    <h2 class="logoProd">#{pgGerBEAN.p.nomeprojeto}</h2>
+                    <h4 class="logoProd" style="font-size: 12px">Descrição: #{pgGerBEAN.p.descricao}</h4>
+                </a>
+                <div class="pgMem">
+                    <p class="refPag">Cadastrar Equipe no Projeto: #{pgGerBEAN.p.nomeprojeto}</p>
+                </div>
+                <div class="navPgMem">
+                    <h:form id="form" style="padding: 10px 10px 10px 10px">
+                        <p:messages autoUpdate="true"/>
+                        <p:outputLabel value="Nome da equipe"/>
+                        <p:inputText class="form-control" value="#{equipeBEAN.nomeEquipe}" placeholder="Digite o nome da equipe" required="true" requiredMessage="É necessário digitar o nome da equipe"/><br/>
+                        <p:outputLabel value="Descrição da equipe"/>
+                        <p:inputTextarea class="form-control" value="#{equipeBEAN.descricaoEquipe}" placeholder="Descreva as caracteristicas da equipe" required="true" requiredMessage="É necessário digitar o nome da equipe"/><br/>
+                        <h:panelGrid id="grid" style="font-size: 12px" columns="1" rules="1">
+                            <h:outputLabel value="Selecione as atividades" style="font-size: 15px"/>
+                            <p:selectManyCheckbox id="atv" value="#{equipeBEAN.atividadesSelecionadas}" label=" Atividades" layout="grid" columns="1">
+                                <f:selectItems value="#{equipeBEAN.listaAtividades}" var="atv" itemLabel="#{atv.nomeatividade}" itemValue="#{atv.id}"></f:selectItems>
+                            </p:selectManyCheckbox>
+                            <p:selectManyCheckbox value="#{equipeBEAN.atividadesGerSelecionadas}" label=" Atividades" layout="grid" columns="1">
+                                <f:selectItems value="#{equipeBEAN.listaAtividadesGer}" var="atv1" itemLabel="#{atv1.nomeatividade}" itemValue="#{atv1.id}"></f:selectItems>
+                            </p:selectManyCheckbox>
+                        </h:panelGrid>
+                        <p:outputLabel value="País"/>
+                        <p:inputText class="form-control" value="#{equipeBEAN.pais}" placeholder="País da equipe" required="true" requiredMessage="É necessário descrever o país desta equipe"/><br/>
+
+                        <p:outputLabel value="Estado"/>
+                        <p:inputText class="form-control" value="#{equipeBEAN.estado}" placeholder="Estado da equipe" required="true" requiredMessage="É necessário descrever o estado desta equipe"/><br/>
+
+                        <p:outputLabel value="Cidade"/>
+                        <p:inputText class="form-control" value="#{equipeBEAN.cidade}" placeholder="Cidade da equipe" required="true" requiredMessage="É necessário descrever a cidade desta equipe"/><br/>
+                        <p:commandButton value="Salvar" action="#{equipeBEAN.salvar}" validateClient="true" icon="ui-icon-folder-collapsed"/>
+                    </h:form>
+                </div>
+            </c:if>
+        </c:if>
+        <c:if test="#{equipeBEAN.permissao() == true}">
+            <c:if test="#{equipeBEAN.verificarEquipe() == false}">
+                 <h:form>
+                    <p:remoteCommand name="rc"  action="#{equipeBEAN.encerrarSecao()}"/>
+                    <p:toolbar>
+                        <p:toolbarGroup align="left">
+                            <p:outputLabel value="..::ProDDS::.." style="padding: 5px 30px 0px 30px; font-weight: 900;"/>
+                            <p:separator/>
+                            <p:commandLink value="Bem Vindo #{equipeBEAN.retornaUsuario().nomeusuario}"  style="padding: 5px 0px 0px 30px"/>
+                        </p:toolbarGroup>
+
+                        <p:toolbarGroup align="right">
+                            <p:menuButton value="Conta">
+                                <p:menuitem value="Perfil" url="ALTs/altUsuario.xhtml" icon="ui-icon-person"/>
+                                <p:menuitem value="Logout" onclick="rc()" icon="ui-icon-power">
+                                </p:menuitem>
+                            </p:menuButton>
+                        </p:toolbarGroup>
+
+                    </p:toolbar>
+                </h:form>
+                <a href="../pgPessoalGer.xhtml" style="text-decoration:none;" class="projDesc">
+                    <h2 class="logoProd">#{pgGerBEAN.p.nomeprojeto}</h2>
+                    <h4 class="logoProd" style="font-size: 12px">Descrição: #{pgGerBEAN.p.descricao}</h4>
+                </a>
+                <div class="pgMem">
+                    <p class="refPag">Cadastrar Equipe no Projeto: #{pgGerBEAN.p.nomeprojeto}</p>
+                </div>
+                <div class="navPgMem">
+                    <img src="../imagens/acessoNegado.jpg" style="background-position: center"/>
+                    <h3 class="logoProd" style="font-size: 25px">Você já é gerente de uma equipe no projeto: #{equipeBEAN.proj.nomeprojeto}</h3>
+                    
+                </div>
+            </c:if>
+        </c:if>
+        <c:if test="#{equipeBEAN.permissao() == false}">
+            <div class="cabecalho">
+                <div class="index">
+                    <h1 class="titulo"><span><a class="tituloProd" href="#{equipeBEAN.direcionaUrl()}">ProDDS</a></span></h1>
+                    <h3 class="sub">Gerenciar Equipe</h3>
+                </div>
+            </div>
+            <div>
+                <span><img class="acessoNegado" src="../imagens/acessoNegado.jpg"/></span>
+            </div>
+        </c:if>
+    </h:body>
+</html>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <style type="text/css">    
+            @import url('../css/novoCss.css'); 
+            @import url(../css/bootstrap.min.css);
+            @import url(css/icones.css);
+            @import url(../css/bootstrap.css);
+        </style> 
+        <link rel="shortcut icon" href="../imagens/header.png" />
+        <title>Cadastrar Processo</title>
+        <meta charset="UTF-8"/>
+    </h:head>
+    <h:body>
+        <c:if test="#{processoBEAN.permissao() == true}">
+            <h:form>
+                <p:remoteCommand name="rc"  action="#{processoBEAN.encerrarSecao()}"/>
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:outputLabel value="..::ProDDS::.." style="padding: 5px 30px 0px 30px; font-weight: 900;"/>
+                        <p:separator/>
+                        <p:commandLink value="Bem Vindo #{processoBEAN.retornaUsuario().nomeusuario}"  style="padding: 5px 0px 0px 30px"/>
+                    </p:toolbarGroup>
+
+                    <p:toolbarGroup align="right">
+                        <p:menuButton value="Conta">
+                            <p:menuitem value="Perfil" url="ALTs/altUsuario.xhtml" icon="ui-icon-person"/>
+                            <p:menuitem value="Logout" onclick="rc()" icon="ui-icon-power">
+                            </p:menuitem>
+                        </p:menuButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+            </h:form>
+            <a href="../pgPessoalAdm.xhtml" style="text-decoration:none;" class="projDesc">
+                <h2 class="logoProd">ProDDS</h2>
+            </a>
+            <div class="pgMem">
+                <p class="refPag">Cadastrar Novo Processo de Desenvolvimento</p>
+            </div>
+            <div class="navPgMem" style="padding: 10px 10px 10px 10px">
+                <h:form id="cadProcesso">
+                    <!--<p:messages autoUpdate="true"/>
+                    <p:growl id="growl" showDetail="true" sticky="true"/>--> 
+                    <h:outputLabel for="nomeProcesso" value="Digite o nome do processo:" />
+                    <p:inputText id="nomeProcesso" placeholder="Digite o nome do processo" class="form-control" value="#{processoBEAN.nomeProcesso}"  required="true" requiredMessage="É necessário digitar algum nome de processo"/>
+                    <br/>
+                    <p:outputLabel value="Descrição sobre o processo:"/>
+                    <p:inputTextarea class="form-control" placeholder="Descreva as principais caracteristicas, beneficios ou desafios" value="#{processoBEAN.descricaoProcesso}" required="true" requiredMessage="É necessário descrever sobre o processo"/>
+                    <br/>
+                    <p:outputLabel value="Total de fases:"/><br/>
+                    <p:inputText id="fase" value="#{processoBEAN.totalFases}" style="margin-bottom: 10px"/>
+                    <p:slider for="fase" style="width: 180px;" minValue="1" maxValue="50" onSlideStart="1"/><br/>
+
+                    <p:commandButton value="Prosseguir"  
+                                     icon="ui-icon-circle-arrow-e" 
+                                     action="#{processoBEAN.prosseguir}" 
+                                     validateClient="true" 
+                                     ajax="true" 
+                                     oncomplete="cadFase.show()" 
+                                     update="cadProcesso:idDialog">
+                    </p:commandButton>
+                    <p:dialog header="Processo - Informações sobre as fases do projeto" id="idDialog" widgetVar="cadFase" modal="true" showEffect="size" hideEffect="explode" resizable="false" width="800px" height="500px">
+                        <h:panelGrid class="tabCad" id="idDialogFase">
+                            <p:outputLabel value="Fase #{processoBEAN.contFase}"/>
+
+                            <h:inputText value="#{processoBEAN.nomeFase}" class="form-control" id="idInput"/><br/>
+                            <p:outputLabel value="Descrição"/>
+                            <h:inputText value="#{processoBEAN.descricaoFase}" class="form-control"/><br/>
+                            <p:commandButton value="Adicionar" 
+                                             action="#{processoBEAN.cadastrarFase}"
+                                             update="cadProcesso:idDialog" 
+                                             oncomplete="cadFase.show()">
+                            </p:commandButton>
+                            <p:dataTable value="#{processoBEAN.listaFases}" var="fases" emptyMessage="Não foi cadastrada nenhuma fase para este processo">
+                                <p:column headerText="Nome">
+                                    <p:outputLabel value="#{fases.nomefase}"/>
+                                </p:column>
+                                <p:column headerText="Descrição">
+                                    <p:outputLabel value="#{fases.descricaofase}"/>
+                                </p:column>
+                                <p:column headerText="Cadastrar atividades">
+                                    <p:commandButton value="Adicionar" action="#{processoBEAN.adicionarAtividades(fases)}" oncomplete="idDialogAtv.show()"/>
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
+                    </p:dialog>
+                    <p:dialog header="Processo - informações sobre as atividades do projeto" 
+                              widgetVar="idDialogAtv"
+                              id="dialogAtv"
+                              showEffect="size"
+                              hideEffect="explode">
+                        <p:outputLabel value="Nome da atividade"/>
+                        <h:inputText value="#{processoBEAN.nomeAtividade}" class="form-control"/><br/>
+                        <p:outputLabel value="Descrição da atividade"/>
+                        <h:inputText value="#{processoBEAN.descricaoAtividade}" class="form-control"/><br/>
+                        <p:outputLabel value="Atividades Antecessoras"/>
+                        <p:selectManyMenu value="#{processoBEAN.atividadesAntecessoras}" style="font-size: 12px; height: 150px; width: 600px" showCheckbox="true">
+                            <f:selectItems value="#{processoBEAN.listaAtividades}" var="atv" itemLabel="#{atv.nomeatividade}" itemValue="#{atv.id}">
+                            </f:selectItems>
+                        </p:selectManyMenu>
+                        <p:outputLabel value="Atividades Sucessoras"/><br/>
+                        <h:inputTextarea class="form-control" value="#{processoBEAN.atividadesSucessoras}"/><br/>
+                        <p:commandButton value="Adicionar" 
+                                         action="#{processoBEAN.salvarAtividades}"
+                                         update="cadProcesso:dialogAtv"
+                                         oncomplete="idDialogAtv.show()">
+                        </p:commandButton>
+                        <p:dataTable id="tableAtividades" value="#{processoBEAN.listaAtividadeFase()}" var="atv" emptyMessage="Você ainda não cadastrou nenhuma ativdade">
+                            <p:column headerText="Fase">
+                                <p:outputLabel value="#{atv.idfase.nomefase}"/>
+                            </p:column>
+                            <p:column headerText="Nome">
+                                <p:outputLabel value="#{atv.nomeatividade}"/>
+                            </p:column>
+                            <p:column headerText="Descrição">
+                                <p:outputLabel value="#{atv.descricaoatividade}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:ajax listener="#{processoBEAN.fecharDialog()}"/>
+                    </p:dialog><br/><br/>
+
+                </h:form>
+                <h:form id="formEdtRem">
+                    <p:outputLabel value="Processos Cadastrados"/>
+                    <p:dataTable value="#{processoBEAN.listaProcessos}" var="proc" emptyMessage="Não foi cadastrado nenhum processo">
+                        <p:column headerText="Nome" style="text-align: center">
+                            <h5>#{proc.nomeprocesso}</h5>
+                        </p:column>
+                        <p:column headerText="Descrição" style="text-align: justify">
+                            <h6>#{proc.descricao}</h6>
+                        </p:column>
+                        <p:column headerText="Processo" id="prox" style="text-align: center">
+                            <p:commandButton icon="ui-icon-pencil" actionListener="#{processoBEAN.alterar(proc)}"
+                                             update="" oncomplete="widget#{proc.id}.show()">                                
+                            </p:commandButton>
+                            <p:dialog header="Alterar" id="#{proc.id}widget" widgetVar="widget#{proc.id}" modal="true" width="60%" height="250px">
+                                <div style="text-align: left">
+                                <h:outputLabel value="Nome do processo:" />
+                                <h:inputText 
+                                             class="form-control" 
+                                             value="#{proc.nomeprocesso}"> 
+                                </h:inputText>
+                                <br/>
+                                <p:outputLabel value="Descrição:"/>
+                                <p:inputTextarea class="form-control" 
+                                                 placeholder="Descreva as principais caracteristicas, beneficios ou desafios" 
+                                                 value="#{proc.descricao}"/>
+                                <br/>
+                                
+                                <p:commandButton value="Salvar"  
+                                                 icon="ui-icon-circle-arrow-e"
+                                                 actionListener="#{processoBEAN.editarFase(proc)}">                                                 
+                                </p:commandButton>  
+                                <p:commandButton value="Editar Fases"                                               
+                                               actionListener="#{processoBEAN.carregarFases(proc)}"
+                                               oncomplete=""/><br/>
+                                </div>
+                            </p:dialog>
+                        </p:column>
+                        <p:column headerText="Fase" style="text-align: center">
+                            <p:commandButton icon="ui-icon-pencil" actionListener="#{processoBEAN.carregarFases(proc)}"
+                                             oncomplete="fase#{proc.id}.show()">                                
+                            </p:commandButton>
+                            <p:dialog header="Alterar" id="#{proc.id}fase" widgetVar="fase#{proc.id}" modal="true" width="60%" height="250px">
+                                <div style="text-align: left">
+                                <h:outputLabel value="Nome do processo:" />
+                                <h:inputText 
+                                             class="form-control" 
+                                             value="#{gerenciarProcessoBEAN.nomeFase}"> 
+                                </h:inputText>
+                                <br/>
+                                <p:outputLabel value="Descrição:"/>
+                                <p:inputTextarea class="form-control" 
+                                                 placeholder="Descreva as principais caracteristicas, beneficios ou desafios" 
+                                                 value="#{gerenciarProcessoBEAN.descricaoFase}"/>
+                                <br/>
+                                
+                                <p:commandButton value="Salvar"  
+                                                 icon="ui-icon-circle-arrow-e"
+                                                 actionListener="#">                                                 
+                                </p:commandButton><br/>
+                                <p:dataTable value="#{gerenciarProcessoBEAN.carregaTabela(proc)}" var="fase">
+                                    <p:column headerText="Fase">
+                                        <p:outputLabel value="#{fase.nomefase}"/>
+                                    </p:column>
+                                    <p:column headerText="Descrição">
+                                        <p:outputLabel value="#{fase.descricaofase}"/>
+                                    </p:column>                                    
+                                    <p:column headerText="Alterar">
+                                        <p:commandButton icon="ui-icon-pencil" actionListener="#{gerenciarProcessoBEAN.selecionarFase(fase)}"
+                                              oncomplete="fase#{proc.id}.hide() fase#{proc.id}.show()"/>   
+                                    </p:column>
+                                </p:dataTable>
+                                </div>
+                            </p:dialog>
+                        </p:column>
+                        <p:column headerText="Remover" style="text-align: center">
+                            <p:commandButton icon="ui-icon-trash">
+                                <p:ajax listener="#{processoBEAN.avisoRemocao(proc)}" update="dialogRem" oncomplete="dlgRem.show()"/>
+                            </p:commandButton>
+                            <p:dialog id="dialogRem" widgetVar="dlgRem" header="Remover" modal="true">
+                                <img src="../imagens/erro.jpg" width="50px"/>
+                                <p:outputLabel value="Deseja Remover o Processo #{processoBEAN.processo.nomeprocesso} ?"/>
+                                <br/><br/>
+                                <p:commandButton value="Sim" style="float: left">
+                                    <p:ajax listener="#{processoBEAN.remover(proc)}"/>
+                                </p:commandButton>
+                                <p:commandButton value="Não" style="float: right">
+                                    <p:ajax oncomplete="dlgRem.hide()"/>
+                                </p:commandButton>                            
+                            </p:dialog>
+                        </p:column>                        
+                    </p:dataTable>         
+                </h:form>
+            </div>  
+        </c:if>
+    </h:body>
+</html>

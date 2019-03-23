@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>       
+        <link rel="stylesheet" type="text/css" href="../css/ProDDSStyle.css"/>
+        <style type="text/css">    
+            @import url('../css/novoCss.css');
+            @import url(../css/bootstrap.min.css);
+            @import url(../css/icones.css);
+            @import url(../css/bootstrap.css);
+        </style> 
+        <link rel="shortcut icon" href="../imagens/header.png" />
+        <title>Cadastrar atividade por usuário</title>
+        <meta charset="UTF-8"/>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:remoteCommand name="rc"  action="#{atvUsuarioBEAN.encerrarSecao()}"/>
+            <p:toolbar style="width: 100%;">
+                <p:toolbarGroup align="left">
+                    <p:outputLabel value="..::ProDDS::.." style="padding: 5px 30px 0px 30px; font-weight: 900;"/>
+                    <p:separator/>
+                    <p:commandLink value="Bem Vindo #{pgGerBEAN.retornaUsuario().nomeusuario}"  style="padding: 5px 0px 0px 30px"/>
+                </p:toolbarGroup>
+
+                <p:toolbarGroup align="right">
+                    <p:menuButton value="Conta">
+                        <p:menuitem value="Perfil" url="../ALTs/altUsuario.xhtml" />
+                        <p:menuitem value="Logout" onclick="rc()">
+                        </p:menuitem>
+                    </p:menuButton>
+                </p:toolbarGroup>
+                
+            </p:toolbar>
+        </h:form>
+        <c:if test="#{atividadeBEAN.permissao() == true}">
+            <a href="../pgPessoalGer.xhtml" style="text-decoration:none;" class="projDesc">
+                <h2 class="logoProd">#{pgGerBEAN.p.nomeprojeto}</h2>
+                <h4 class="logoProd" style="font-size: 12px">Descrição: #{pgGerBEAN.p.descricao}</h4>
+            </a>
+            <div class="pgMem">
+                <p class="refPag">Cadastrar Atividade no Projeto: #{pgGerBEAN.p.nomeprojeto}</p>
+            </div>
+        
+            <div class="navPgMem">
+                <br/>
+                <h:form style="padding: 10px 10px 10px 10px">
+                    <p:messages autoUpdate="true"/>
+                    <div style="float: left; width: 400px">
+                        <p:outputLabel>Selecione a atividade:</p:outputLabel><br/>
+                        <p:selectOneMenu value="#{atvUsuarioBEAN.atividade}"  style="width: 400px">
+                            <f:selectItems value="#{atvUsuarioBEAN.listaAtvProcesso}" var="atvProc"
+                                           itemLabel="#{atvProc.nomeatividade}" itemValue="0:#{atvProc.idfase.idprocesso.idusuario.id}|#{atvProc.id}" itemDescription="#{atvProc.descricaoatividade}"/>
+                            <f:selectItems value="#{atvUsuarioBEAN.listaAtividade}" 
+                                           var="atv" itemLabel="#{atv.nomeatividade}" itemValue="1:#{atv.idgerente.id}|#{atv.id}" itemDescription="#{atv.descricao}"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <div style="float: left; padding-left: 20px">
+                        <p:outputLabel>Selecione o usuário:</p:outputLabel><br/>
+                        <p:selectOneMenu style="width: 400px" value="#{atvUsuarioBEAN.membro}">
+                            <f:selectItems value="#{atvUsuarioBEAN.listaEquipe}" var="eqp"
+                                           itemLabel="#{eqp.idmembro.nomeusuario}" itemValue="#{eqp.idmembro.id}"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <p:commandButton value="Cadastrar" style="float:right; margin: 0px 20px 20px 20px"
+                                     icon="ui-icon-check" action="#{atvUsuarioBEAN.salvar}">
+                    </p:commandButton>
+                </h:form><br/><br/><br/>
+                <div style="width: 100%; float: left">
+                    <p:separator/>
+                    <p:outputLabel value="Equipe: #{atvUsuarioBEAN.equipe.nomeequipe}" class="logoProd" style="font-size: 20px;padding-left: 10px"/><br/>
+                    <p:outputLabel value="Descrição: #{atvUsuarioBEAN.equipe.descricao}" class="logoProd" style="font-size: 12px; padding: 0px 0px 0px 15px"/><br/>
+                    <p:dataList value="#{atvUsuarioBEAN.atvsMembros}" var="mem" type="ordered" emptyMessage="Você não cadastrou nenhuma atividade para sua equipe" style="padding: 10px 10px 10px 10px">
+                        <p:outputLabel value="Usuário: #{mem.idmembro.nomeusuario}" class="logoProd" style="padding-left: 0px  "/><br/>
+                        <p:outputLabel value="Atividade: #{atvUsuarioBEAN.retornaAtividade(mem)}" class="logoProd" style="padding-left: 0px  "/><br/>
+                        <p:outputLabel value="Status: #{atvUsuarioBEAN.retornaStatus(mem)}" class="logoProd" style="padding-left: 0px  "/><br/>
+                    </p:dataList>
+                    <p:separator/>
+                </div>
+            </div>
+        </c:if>
+        <c:if test="#{atividadeBEAN.permissao() == false}">
+            <div class="cabecalho">
+            <div class="index">
+                <h1 class="titulo"><span><a class="tituloProd" href="#{atividadeBEAN.direcionaUrl()}">ProDDS</a></span></h1>
+                <h3 class="sub">Cadastrar atividade</h3>
+            </div>
+        </div>
+            <div>
+                <span><img class="acessoNegado" src="../imagens/acessoNegado.jpg"/></span>
+            </div>
+        </c:if>
+
+    </h:body>
+</html>

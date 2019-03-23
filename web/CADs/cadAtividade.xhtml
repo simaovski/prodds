@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>       
+        <link rel="stylesheet" type="text/css" href="../css/ProDDSStyle.css"/>
+        <style type="text/css">    
+            @import url('../css/novoCss.css');
+            @import url(../css/bootstrap.min.css);
+            @import url(../css/icones.css);
+            @import url(../css/bootstrap.css);
+        </style> 
+        <link rel="shortcut icon" href="../imagens/header.png" />
+        <title>Cadastrar atividade</title>
+        <meta charset="UTF-8"/>
+    </h:head>
+    <h:body>
+        <c:if test="#{atividadeBEAN.permissao() == true}">
+            <h:form>
+                <p:remoteCommand name="rc"  action="#{atividadeBEAN.encerrarSecao()}"/>
+                <p:toolbar style="width: 100%;">
+                    <p:toolbarGroup align="left">
+                        <p:outputLabel value="..::ProDDS::.." style="padding: 5px 30px 0px 30px; font-weight: 900;"/>
+                        <p:separator/>
+                        <p:commandLink value="Bem Vindo #{atividadeBEAN.retornaUsuario().nomeusuario}"  style="padding: 5px 0px 0px 30px"/>
+                    </p:toolbarGroup>
+
+                    <p:toolbarGroup align="right">
+                        <p:menuButton value="Conta">
+                            <p:menuitem value="Perfil" url="../ALTs/altUsuario.xhtml" />
+                            <p:menuitem value="Logout" onclick="rc()">
+                            </p:menuitem>
+                        </p:menuButton>
+                    </p:toolbarGroup>
+
+                </p:toolbar>
+            </h:form>
+             <a href="../pgPessoalGer.xhtml" style="text-decoration:none;" class="projDesc">
+                <h2 class="logoProd">#{pgGerBEAN.p.nomeprojeto}</h2>
+                <h4 class="logoProd" style="font-size: 12px">Descrição: #{pgGerBEAN.p.descricao}</h4>
+            </a>
+            <div class="pgMem">
+                <p class="refPag">Cadastrar Atividade no Projeto: #{pgGerBEAN.p.nomeprojeto}</p>
+            </div>        
+            <div class="navPgMem" style="padding: 10px 10px 10px 10px">
+                <h:form> 
+                    <p:messages autoUpdate="true"/>
+                    <div>
+                        <p:outputLabel value="Nome da atividade:"/>
+                        <p:inputText class="form-control" value="#{atividadeBEAN.nomeAtividade}" placeholder="Digite o nome da atividade. Ex: Diagrama de Classe" required="true" requiredMessage="É necessário digitar o nome da atividade"/><br/>
+                        <p:outputLabel for="menu" value="Fase:" style="float: left; padding-right: 4px"/>
+                        <p:selectOneMenu id="menu" value="#{atividadeBEAN.idFase}">
+                            <f:selectItems value="#{atividadeBEAN.listaFases}" var="fase" itemLabel="#{fase.nomefase}" itemValue="#{fase.id}"/>
+                        </p:selectOneMenu>
+                    </div><br/>
+                    <div>
+                        <p:outputLabel value="Descrição da atividade:"/>
+                        <p:inputTextarea class="form-control" value="#{atividadeBEAN.descricao}" placeholder="Breve descrição sobre a atividade. Ex: Definir caracteristicas sobre..." required="true" requiredMessage="É necessário descrever a atividade" style="height: 150px"/><br/>
+                    </div>
+                    <p:outputLabel value="Pré requisitos (Atividades cadastradas pelo Administrador do projeto)"/>
+                    <p:selectManyMenu value="#{atividadeBEAN.atvsAntecessorasProcesso}" showCheckbox="true" class="inputShowBox" required="false" requiredMessage="É necessário selecionar ao menos uma atividade" style="width: 100%">
+                        <f:selectItems value="#{atividadeBEAN.retornaAtividadesProcesso()}" var="atv" itemLabel="#{atv.nomeatividade}" itemValue="#{atv.id}" />
+                    </p:selectManyMenu>
+                    <br/>
+                    <p:outputLabel value="Pré requisitos (Atividades cadastradas por você)"/>
+                    <p:selectManyMenu value="#{atividadeBEAN.atvsAntecessoras}" showCheckbox="true" class="inputShowBox" required="false" requiredMessage="É necessário selecionar ao menos uma atividade" style="width: 100%">
+                        <f:selectItems value="#{atividadeBEAN.retornaAtividades()}" var="atv" itemLabel="#{atv.nomeatividade}" itemValue="#{atv.id}" />
+                    </p:selectManyMenu>
+                    
+                    <br/>
+                    <p:outputLabel value="Atividades sucessoras"/>
+                    <p:inputText class="form-control" value="#{atividadeBEAN.atvsSucessoras}" placeholder="Digite as atividades sucessoras após a conclusão desta atividade" required="true" requiredMessage="É necessário digitar as atividades sucessoras"/>
+                    <br/><p:commandButton value="Salvar" action="#{atividadeBEAN.salvar}" validateClient="true" update="@all"/>
+                </h:form>
+            </div>
+        </c:if>
+        <c:if test="#{atividadeBEAN.permissao() == false}">
+            <div class="cabecalho">
+            <div class="index">
+                <h1 class="titulo"><span><a class="tituloProd" href="#{atividadeBEAN.direcionaUrl()}">ProDDS</a></span></h1>
+                <h3 class="sub">Cadastrar atividade</h3>
+            </div>
+        </div>
+            <div>
+                <span><img class="acessoNegado" src="../imagens/acessoNegado.jpg"/></span>
+            </div>
+        </c:if>
+
+    </h:body>
+</html>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Página Pessoal</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style type="text/css">    
+            @import url('css/novoCss.css');
+            @import url(css/bootstrap.min.css);
+            @import url(css/icones.css);
+            @import url(css/bootstrap.css);
+        </style> 
+        <style type="text/css">
+            .datalist-noborder .ui-widget-content {
+            border: none;
+            }
+        </style>
+        <link rel="shortcut icon" href="imagens/header.png" />
+    </h:head>
+    <h:body>
+        <c:if test="#{pgAdmBEAN.permissao() == true}">
+            <h:form>
+                <p:remoteCommand name="rc"  action="#{pgAdmBEAN.encerrarSecao()}"/>
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:outputLabel value="..::ProDDS::.." style="padding: 5px 30px 0px 30px; font-weight: 900;"/>
+                        <p:separator/>
+                        <p:commandLink value="Bem Vindo #{pgAdmBEAN.retornaUsuario().nomeusuario}"  style="padding: 5px 0px 0px 30px"/>
+                    </p:toolbarGroup>
+
+                    <p:toolbarGroup align="right">
+                        <p:menuButton value="Conta">
+                            <p:menuitem value="Perfil" url="ALTs/altUsuario.xhtml" />
+                            <p:menuitem value="Logout" onclick="rc()">
+                            </p:menuitem>
+                        </p:menuButton>
+                    </p:toolbarGroup>
+
+                </p:toolbar>
+            </h:form>
+            <a href="index.xhtml" style="text-decoration:none;">
+                <h1 class="logoProd">ProDDS</h1>
+            </a>
+            <div class="pgMem">
+                <p class="refPag">Página Pessoal - Administrador</p>
+            </div>
+            <div class="navPgMem">
+                <h:form>
+                    <div class="navMem" >
+                        <h3 class="menu" style="padding: 10px 10px 10px 10px; font-weight: 900">Opções</h3>
+                        <p:commandLink class="link" value="Notificações" action="#{pgAdmBEAN.notificacao()}"/><br/>
+                        <p:separator/>
+                        <p:commandLink class="link" value="Cadastrar Projeto" action="#{pgAdmBEAN.proj()}"/><br/>
+                        <p:separator/>
+                        <p:commandLink class="link" value="Gerenciar Processos" action="#{pgAdmBEAN.processo()}"/>
+                        <p:separator/>
+                        <p:commandLink class="link" value="Gerenciar Fases" action="#{pgAdmBEAN.fase()}"/>
+                        <p:separator/>
+                        <p:commandLink class="link" value="Gerenciar Atividades" action="#{pgAdmBEAN.processo()}"/>
+                        <p:separator/>
+                    </div>
+                    <div class="navProjMem "> 
+                        <div style="">
+                        <h3>Meus Projetos</h3>
+                        </div>
+                        <p:dataList value="#{pgAdmBEAN.listaProjeto}" var="proj" type="definition" 
+                                    emptyMessage="Você não cadastrou nenhum projeto"
+                                    style="margin-top: 100px">
+                            <div style="padding: 10px 10px 10px 10px">
+                                <div style="border-width: 3px; border-color: #f0f0f0">
+                                    <p:outputLabel value="#{proj.nomeprojeto}" style="color: #398439;"/>
+                                    <p:outputLabel value="#{pgAdmBEAN.estado(proj)}" style="padding-left: 5px;color: #2b669a; width: 20%"/><br/>
+                                </div>
+                                <h:outputLabel value="#{proj.descricao}" style="font-size: 12px; width: 80%; float: left"/><br/>
+                                <p:commandButton value="Projeto" action="#{pgAdmBEAN.relatorio(proj)}" icon="ui-icon-folder-open" 
+                                                 style="float: right; width: 15%;" class="btn-info"/><br/>
+                            </div>
+                            <p:separator style="width: 95%; float: right"/><br/>
+                        </p:dataList>
+                    </div>
+                </h:form>
+            </div>
+            
+        </c:if>
+        
+        <c:if test="#{pgAdmBEAN.permissao() == false}">
+            <div class="cabecalho">
+                <div class="index">
+                    <h1 class="titulo"><span><a class="tituloProd" href="#{statusProjetoBEAN.direcionaUrl()}">ProDDS</a></span></h1>
+                    <h3 class="sub">Administrador</h3>
+                </div>
+            </div>
+            <div>
+                <span><img class="acessoNegado" src="imagens/acessoNegado.jpg"/></span>
+            </div>
+        </c:if>
+    </h:body>
+</html>

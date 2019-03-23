@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="TCCBackupPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>data.dao.Usuario</class>
+    <class>data.crud.Fasesprocesso</class>
+    <class>data.crud.Processo</class>
+    <class>data.crud.Atividadesantecessorasfaseprocesso</class>
+    <class>data.crud.Atividadesfaseprocesso</class>
+    <class>data.crud.Projeto</class>
+    <class>data.crud.Statusprojeto</class>
+    <class>data.crud.Gerente</class>
+    <class>data.crud.Notificacao</class>
+    <class>data.crud.Equipe</class>
+    <class>data.crud.Localizacao</class>
+    <class>data.crud.Membrosequipe</class>
+    <class>data.crud.Atividadesequipe</class>
+    <class>data.crud.Atividade</class>
+    <class>data.crud.Atividadesantecessoras</class>
+    <class>data.crud.Atividademembroequipe</class>
+    <class>data.crud.Log</class>
+    <class>data.crud.Logusuario</class>
+    <class>data.crud.Artefato</class>
+    <class>data.crud.Statusatividade</class>
+    <class>data.crud.Notificacaogerente</class>
+    <class>data.crud.Gerenteprojeto</class>
+    <class>data.crud.Gerenteprocesso</class>
+    <class>data.crud.Faseprojeto</class>
+    <class>data.crud.Atividadesequipegerente</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql:prod"/>
+      <property name="javax.persistence.jdbc.user" value="postgres"/>
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="postgres"/>
+    </properties>
+  </persistence-unit>
+</persistence>

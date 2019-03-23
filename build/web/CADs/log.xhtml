@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Registrar Log</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style type="text/css">    
+            @import url('../css/novoCss.css');
+            @import url(../css/bootstrap.min.css);
+            @import url(css/icones.css);
+            @import url(../css/bootstrap.css);
+        </style> 
+        <link rel="shortcut icon" href="../imagens/header.png" />
+    </h:head>
+    <h:body>
+        <!--PRIMEIRO CONJUNTO DE IFs: é usuário/gerente e está em um projeto em DESENVOLVIMENTO-->
+        <c:if test="#{logBEAN.permissao() == true}">
+            <div class="fundoPagina">
+                <h:form>
+                    <p:remoteCommand name="rc"  action="#{logBEAN.encerrarSecao()}"/>
+                    <p:toolbar>
+                        <p:toolbarGroup align="left">
+                            <p:outputLabel value="..::ProDDS::.." style="padding: 2px 10px 2px 30px"/>
+                            <p:separator/>
+                            <p:commandLink value="Bem Vindo #{logBEAN.retornaUsuario().nomeusuario}"  style="padding: 5px 0px 0px 30px"/>
+                            <p:separator/>
+                        </p:toolbarGroup>
+
+                        <p:toolbarGroup align="right">
+                            <p:menuButton value="Conta">
+                                <p:menuitem value="Perfil" url="../ALTs/altUsuario.xhtml" icon="ui-icon-person"/>
+                                <p:menuitem value="Logout" onclick="rc()" icon="ui-icon-power">
+                                </p:menuitem>
+                            </p:menuButton>
+                        </p:toolbarGroup>
+
+                    </p:toolbar>
+                </h:form>
+                <a href="../pgPessoalMem.xhtml" style="text-decoration:none;" class="projDesc">
+                    <h2 class="logoProd">ProDDS</h2>
+                </a>
+                <div class="pgMem">
+                </div>  
+                <div class="navPgMem">
+                    <h:form style="padding: 10px 10px 10px 10px">
+                        
+                        <p:outputLabel class="formProd" value="Buscar Log" style="width:100%"/>
+                        <p:inputText class="form-control" placeholder="Digite o nome do projeto" value="#{logBEAN.pesquisa}" style="width: 90%; float: left"/>
+                        <p:commandButton value="Pesquisar" style="float: right" action="#{logBEAN.filtrar()}" update="tableLog"/>
+                        <div style="padding-bottom: 10px"/>
+                        
+                        <p:dataTable value="#{logBEAN.listaLog}" id="tableLog" var="log" emptyMessage="Nenhum log cadastrado" style="padding-top: 10px">
+                            <p:column headerText="Atividade" class="logoProd" style="padding-left: 0%; font-size: 15px; text-align: center">
+                                <p:outputLabel value="#{logBEAN.retornaAtividadePorId(log.atividade.id)}"/>
+                            </p:column>
+                            <p:column headerText="Projeto" class="logoProd" style="padding-left: 0%; font-size: 15px; text-align: center">
+                                <p:outputLabel value="#{log.atividade.idequipe.idprojeto.nomeprojeto}"/>
+                            </p:column>
+                            <p:column headerText="Data de início" class="logoProd" style="padding-left: 0%; font-size: 15px; text-align: center">
+                                <p:outputLabel value="#{log.datainicio}"/>
+                            </p:column>
+                            <p:column headerText="Data de término" class="logoProd" style="padding-left: 0%; font-size: 15px; text-align: center">
+                                <p:outputLabel value="#{log.datafim}"/>
+                            </p:column>
+                            <p:column headerText="Hora de início" class="logoProd" style="padding-left: 0%; font-size: 15px; text-align: center">
+                                <p:outputLabel value="#{log.horainicio}"/>
+                            </p:column>
+                            <p:column headerText="Hora de término" class="logoProd" style="padding-left: 0%; font-size: 15px; text-align: center">
+                                <p:outputLabel value="#{log.horafim}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </div>
+            </div>
+            <!--
+            <h:form>
+                <p:panel id="panel" header="Log individual" style="margin-bottom:10px;" class="">
+                    <p:dataTable var="log" value="{registroLogBEAN.listaAtvMembro}">
+                        <p:column headerText="Projeto">
+                            <h:outputText value="{log.idprojeto.nomeprojeto}" />
+                        </p:column>
+                        <p:column headerText="Gerente">
+                            <h:outputText value="{log.idgerente.nomeusuario}" />
+                        </p:column>
+                        <p:column headerText="Equipe">
+                            <h:outputText value="{log.idequipe.nomeequipe}" />
+                        </p:column>
+                        <p:column headerText="Atividade">
+                            <p:commandLink style="text-decoration: underline; color: #2d6ca2;" value="{log.idatividade.nomeatividade}" actionListener="{registroLogBEAN.descricao(log)}"/>
+                        </p:column>
+                        <p:column headerText="Sucessora">
+                            <h:outputText value="{log.idatividade.atividadessucessoras}" />
+                        </p:column>
+                        <p:column headerText="Antecessora" style="width: 200px;">
+                            <p:selectOneListbox class="form-control" style="width: 230px; height: 60px">
+                                <f:selectItems value="{registroLogBEAN.atvsAntecessoras(log.idatividade.id)}" var="aux" itemLabel="{registroLogBEAN.listaAntecessoras(aux.idatvantecessora, log)}"/>
+                            </p:selectOneListbox>
+                        </p:column>
+                        <p:column headerText="Iniciar atividade">
+                            <c:if test="{log.status != true}">
+                                <p:selectBooleanButton value="{registroLogBEAN.btn}" onLabel="Finalizar" offLabel="Iniciar" onIcon="ui-icon-close" offIcon="ui-icon-check" style="width:100px">
+                                    <p:ajax listener="{registroLogBEAN.registrar(log)}"/>
+                                </p:selectBooleanButton>
+                            </c:if>
+                            <c:if test="{log.status == true}">
+                                A atividade ainda não pode ser iniciada. Contate seu gerente.
+                            </c:if>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+            <p:panel id="panel" header="Enviar artefato" style="margin-bottom:10px;" class="">
+                <h:form enctype="multipart/form-data">  
+                    <p:fileUpload value="{registroLogBEAN.file}" mode="simple"/>
+                    <h:outputLabel value="Selecione a atividade: " style="padding: 10px 10px 10px 0px" />
+                    <p:selectOneMenu value="{registroLogBEAN.idAtividadeSelecionada}">
+                        <f:selectItems value="{registroLogBEAN.listaAtvMembro}" var="a" itemLabel="{a.idatividade.nomeatividade}" itemValue="#{a.id}"/>
+                    </p:selectOneMenu>
+                    <br/>
+                    <p:commandButton value="Enviar" ajax="false" actionListener="{registroLogBEAN.upload()}"/>
+                </h:form>
+            </p:panel>
+            <h:form>
+                <p:panel id="panel" header="Registro de Logs" style="margin-bottom:10px;" class="">
+                    <p:dataTable id="tbl" var="logsIndividuais" value="{registroLogBEAN.listLog}"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                         paginator="true" rows="10" style="margin-bottom:20px">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Projeto" />
+                            </f:facet>
+                            <h:outputText value="{logsIndividuais.idprojeto.nomeprojeto}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Atividade" />
+                            </f:facet>
+                            <h:outputText value="{logsIndividuais.idatividade.nomeatividade}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Data Início"/>
+                            </f:facet>
+                            <h:outputText value="{logsIndividuais.datainicio}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Hora Início" />
+                            </f:facet>
+                            <h:outputText value="{logsIndividuais.horainicio}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Data Fim" />
+                            </f:facet>
+                            <h:outputText value="{logsIndividuais.datafim}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Hora Fim" />
+                            </f:facet>
+                            <h:outputText value="{logsIndividuais.horafim}" />
+                        </p:column>
+                    </p:dataTable>
+                    </p:panel>
+            </h:form>
+            -->
+        </c:if>
+    </h:body>
+</html>

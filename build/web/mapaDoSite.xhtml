@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>       
+        <style type="text/css">    
+            @import url(css/ProDDSStyle.css); 
+            @import url(css/bootstrap.min.css);
+            @import url(css/icones.css);
+            @import url(css/bootstrap.css);
+            @import url('css/novoCss.css');
+        </style> 
+        <link rel="shortcut icon" href="imagens/header.png" />
+        <title>Mapa do Site</title>
+        <meta charset="UTF-8"/>
+    </h:head>
+    <h:body>
+        <div class="fundoPagina">
+            <h:form>
+                <div style="background-color: #4f4f4f; width: 100%; height: 60px">
+                    <p class="logoProd" style="font-size: 50px; padding-left: 100px; color: #fff; width: 350px; float: left">ProDDS</p>
+                    <p:commandButton value="Cadastre-se" style="width: 150px; float: right; margin: 15px 100px 0px 0px" action="cadUsuario.xhtml?faces-redirect=true"/>
+                </div>
+            </h:form>
+            <div style="background-color: #7a7979; width: 100%; height: 400px">
+                <div style="width: 100%; float: left; text-align: justify">
+                    <div style="float: left; width: 33%; padding: 30px 10px 30px 80px">
+                        <h4>Desenvolvimento Distribuido de Software (DDS)</h4>
+                        <p>O DDS ocorre quando equipes ou empresas cooperam e/ou colaboram para
+                        desenvolver um mesmo software ou parte dele. Essa abordagem evidencia o 
+                        ganho de custos econômicos, temporais e qualitativos. Sobretudo, destaca-se sua
+                        utilização através da globalização entre relacionamento de empresas.</p>
+                    </div>
+                    <div style="float:left; width: 33%; padding: 30px 20px 30px 10px">
+                        <img src="imagens/workflow.png" width="95%"/>
+                    </div>
+                    <div style="float: right; width: 33%; padding: 30px 80px 30px 10px">
+                        <h4>Gestão de Produção no ambiente DDS</h4>
+                        <p>O ProDDS é um sistema que procura auxiliar o controle de produção DDS
+                            a partir do gerencimento das atividades, controles de log's individuais,
+                            e a organização de times/equipes virtuais de um projeto. Desta forma, são
+                            apresentados um conjunto de informações sobre a produção que oferecem um meio
+                            de gerenciar a produção individual e de equipes.</p>
+                        
+                    </div>
+                </div>
+                <div style="width: 100%; float: left; text-align: center">
+                    <a class="btn btn-warning" style="width: 20%; height: 50px; font-size: 22px; font-family: Adobe Heiti Std R;" href="#adm">SOU ADMINISTRADOR</a>
+                    <a style="padding: 0px 10px 0px 10px"/>
+                    <a class="btn btn-success" style="width: 20%; height: 50px; font-size: 22px; font-family: Adobe Heiti Std R;" href="#col">SOU COLABORADOR</a>
+                </div>
+            </div>
+            <a name="adm"></a>
+            <div style="width: 100%; float: left; background-color: #efefef; border-bottom: 5px #afafaf solid ">                
+                <h3 style="font-family: Adobe Heiti Std R; text-align: center">ADMINISTRADOR</h3>
+                <p:separator style="width: 10%"/>
+                <div style="float: left; width: 50%; height: 30%; padding: 20px 20px 20px 20px">
+                    <p style="font-family: Adobe Heiti Std R">
+                        O Administrador é de fundamental importância para o gerencimento de produção no ambiente DDS.
+                        Desta forma, ele é o profissional responsável por cadastrar um novo projeto no ProDDS e cadastrar
+                        o ciclo de vida utilizado por este projeto. Além disso, é de sua responsabilidade selecionar quais
+                        colaboradores serão Gerentes de Equipe.
+                    </p>
+                </div>
+                <div style="float: right; width: 50%; height: 30%; padding: 20px 20px 20px 20px;">
+                    <p style="font-weight: 900">Responsabilidades</p>
+                    <p style="font-family: Adobe Heiti Std R">
+                        São suas responsabilidades no sistema:<br/>
+                        1) Cadastrar um Ciclo de Vida<br/>
+                        2) Cadastrar um Projeto<br/>
+                        3) Selecionar Gerente de Equipe<br/>
+                        4) Gerenciar o Status do Projeto (<a style="color: #269abc">Concluído</a>/<a style="color: #d2322d">Cancelado</a>/<a style="color: #2b542c">Desenvolvimento</a>)
+                    </p>
+                </div>
+            </div>
+            <div style="width: 100%; float: left; background-color: #fff; border-bottom: 5px #afafaf solid">
+                <h3 style="font-family: Adobe Heiti Std R; text-align: center;">PERMISSÕES DE ADMINISTRADOR</h3>
+                <div style="width: 50%; float: left; padding-right: 2%; text-align: center; padding: 10px 10px 10px 10px">
+                    <p style="font-weight: 900;">1) Cadastrar Ciclo de Vida</p>
+                    <p>O Ciclo de Vida representa o conjunto de fases e atividades desenvolvidas em um projeto. Em geral, os Ciclos de Vida 
+                         possuem a caracteristica de ser simples e direto. No ProDDS você pode personalizar o seu Ciclo de Vida a partir do
+                         cadastro de fases e atividades.
+                    </p>
+                </div>
+                <div style="width: 50%; float: right; padding-left: 2%; padding-bottom: 10px">
+                    <a style="font-weight: 900; width: 20%; float: left">Passo a Passo: </a>                        
+                    <a>Página Inicial ADM</a> > <a>Selecionar opção Cadastrar Processo</a>
+
+                    <p:lightBox>  
+                        <h:outputLink value="imagens/prints/processo1.png" title="Cadastrar Processo">  
+                            <img src="imagens/prints/processo1.png" style="height: 90px; width: 140px"/>
+                        </h:outputLink>
+                        <h:outputLink value="imagens/prints/processo2.png" title="Cadastrar Fases do Processo">  
+                            <img src="imagens/prints/processo2.png" style="height: 90px; width: 140px"/>
+                        </h:outputLink>
+                        <h:outputLink value="imagens/prints/processo3.png" title="Selecionar Botão Adicionar">  
+                            <img src="imagens/prints/processo3.png" style="height: 90px; width: 140px"/>
+                        </h:outputLink>
+                        <h:outputLink value="imagens/prints/processo4.png" title="Cadastrar Atividades da Fase Selecionada">  
+                            <img src="imagens/prints/processo4.png" style="height: 90px; width: 140px"/>
+                        </h:outputLink>
+                    </p:lightBox>
+                </div><br/>
+                <p:separator style="width: 90%; float: left; margin-left: 5%; margin-right: 5%"/>
+                <div style="width: 100%;">                    
+                    <div style="width: 50%; float: left; padding-right: 2%; text-align: center; padding: 10px 10px 10px 10px">
+                        <p style="font-weight: 900">2) Cadastrar Projeto</p>
+                        <p>O Projeto representa o sistema a ser desenvolvido. Desta forma, para ocorrer seu cadastro
+                            são necessárias as informações sobre o Nome do Projeto e uma breve descrição do mesmo.
+                            Para resultados efetivos de gerenciamento também é necessário que o Administrador selecione
+                            a data de início e qual o Ciclo de vida Utilizado.
+                        </p>
+                    </div>
+                    <div style="width: 50%; float: right; padding-left: 2%">
+                        <a style="font-weight: 900; width: 20%; float: left">Passo a Passo: </a>                        
+                        <a>Página Inicial ADM</a> > <a>Selecionar opção Cadastrar Projeto</a>
+                        <p:lightBox styleClass="imagebox" id="lighbox2">  
+                            <h:outputLink value="imagens/prints/cadProjeto1.png" title="Cadastrar Projeto">  
+                                <img src="imagens/prints/cadProjeto1.png" style="height: 90px; width: 140px"/>
+                            </h:outputLink>
+                            <h:outputLink value="imagens/prints/cadProjeto2.png" title="Projeto cadastrado com Sucesso">  
+                                <img src="imagens/prints/cadProjeto2.png" style="height: 90px; width: 140px"/>
+                            </h:outputLink>
+                        </p:lightBox>
+                    </div>
+                </div>
+                <p:separator style="width: 90%; float: left; margin-left: 5%; margin-right: 5%"/>
+                <div style="width: 100%;">                    
+                    <div style="width: 50%; float: left; padding-right: 2%; text-align: center; padding: 10px 10px 10px 10px">
+                        <p style="font-weight: 900">3) Selecionar Gerentes de Equipe</p>
+                        <p>Cada projeto poderá possuir N Gerentes de Equipe. O Gerente de Equipe é responsável por gerenciar
+                            atividades e artefatos da sua equipe. Desta forma, para cadastrar um novo Gerente no Projeto, o usuário
+                            colaborador deverá enviar uma solicitação de Gerência ao Administrador do Projeto. O passo a passo dessa ação
+                            é demostrado na seção 
+                            <a class="btn btn-warning" href="#solGer">Solicitar Gerencia.</a>
+                        </p>
+                    </div>
+                    <div style="width: 50%; float: right; padding-left: 2%">
+                        <a style="font-weight: 900; width: 20%; float: left">Passo a Passo: </a>                        
+                        <a>Página Inicial ADM</a> > <a>Notificações</a>
+                        <p:lightBox styleClass="imagebox" id="lighbox3">  
+                            <h:outputLink value="imagens/prints/cadGerente1.png" title="Cancelar solicitação de gerência de Equipe">  
+                                <img src="imagens/prints/cadGerente1.png" style="height: 90px; width: 140px"/>
+                            </h:outputLink>
+                            <h:outputLink value="imagens/prints/cadGerente2.png" title="Confirmar cancelamento">  
+                                <img src="imagens/prints/cadGerente2.png" style="height: 90px; width: 140px"/>
+                            </h:outputLink>
+                            <h:outputLink value="imagens/prints/cadGerente3.png" title="Confirmar solicitação de gerência de Equipe">  
+                                <img src="imagens/prints/cadGerente3.png" style="height: 90px; width: 140px"/>
+                            </h:outputLink>
+                            <h:outputLink value="imagens/prints/cadGerente4.png" title="Confirmar gerente">  
+                                <img src="imagens/prints/cadGerente4.png" style="height: 90px; width: 140px"/>
+                            </h:outputLink>
+                        </p:lightBox>
+                    </div><br/>                      
+                </div>
+                <p:separator style="width: 90%; float: left; margin-left: 5%; margin-right: 5%"/>
+                <div style="width: 100%;">                    
+                    <div style="width: 50%; float: left; padding-right: 2%; text-align: center; padding: 10px 10px 10px 10px">
+                        <p style="font-weight: 900">4) Status do Projeto</p>
+                        <p>O Status do projeto pode possuir três estados:<br/>
+                            Desenvolvimento: O projeto e suas atividades estão em progressão
+                            <br/>Concluído: Neste estado o projeto já foi concluído e nenhuma Atividade deste pode ser desenvolvida
+                            <br/>Cancelado: Um projeto cancelado significa que suas atividades foram pausadas. O Administrador pode 
+                            retornar o Status de um Projeto Cancelado para Em Desenvolvimento, porém, será criado uma nova instância
+                            do Projeto.
+                        </p>
+                    </div>
+                    <div style="width: 50%; float: right; padding-left: 2%">
+                        <a style="font-weight: 900; width: 20%; float: left">Passo a Passo: </a>                        
+                        <a>Página Inicial ADM</a> > <a>Selecionar opção Cadastrar Projeto</a>
+                        
+                    </div>                      
+                </div>  
+            </div>
+            <a name="col"></a>
+            <div style="width: 100%; float: left;  border-bottom: 5px #afafaf solid">
+                <div style="width: 100%; float: left; ">
+                <h3 style="font-family: Adobe Heiti Std R; text-align: center;">COLABORADOR</h3>
+                <p:separator style="width: 10%"/>
+                    <div style="float: left; width: 50%; padding: 10px 10px 10px 10px">
+                        <p style="font-family: Adobe Heiti Std R">
+                            Os Colaboradores de um projeto DDS são os responsáveis pelo desenvolvimento de atividades e 
+                            construção de artefatos durante a construção de um sistema. No ProDDS, um Colaborador pode 
+                            desenvolver uma atividade designada, construindo uma base de meta dados sobre horários e atividades.
+
+                        </p>
+                    </div>
+                    <div style="float: right; width: 50%; padding: 10px 20px 20px 10px">
+                        <p style="font-weight: 900">Responsabilidade</p>
+                        <p style="font-family: Adobe Heiti Std R">
+                            São responsabilidades no sistema:<br/>
+                            1) Desenvolver Atividade Designada<br/>
+                            2) Enviar Artefato da Atividade
+                        </p>
+                        <p style="font-weight: 900">Potencialidade</p>
+                        <p style="font-family: Adobe Heiti Std R">
+                            Um Colaborador pode<br/>
+                            3) Gerente de uma Equipe<br/><br/>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div  style="width: 100%; float: left; background-color: #fff; border-bottom: 5px #afafaf solid">
+                <div style="width: 100%;"> 
+                    <h3 style="font-family: Adobe Heiti Std R; text-align: center">PERMISSÕES DO COLABORADOR</h3>
+                    <div style="width: 50%; float: left; padding-right: 2%; text-align: center; padding: 10px 20px 20px 10px">
+                        <p style="font-weight: 900">1) Desenvolver atividade designada</p>
+                        <p>O Colaborador poderá desenvolver uma atividade previamente cadastrada para ele. 
+                            Durante seu desenvolvimento será salvo o tempo gasto, a atividade desenvolvida e se essa atividade gerou algum artefato.
+                            Essas informações serão base para a criação dos meta-dados sobre a produção no ambiente DDS.
+                        </p>
+                    </div>
+                    <div style="width: 50%; float: right; padding-left: 2%">
+                        <a style="font-weight: 900; width: 20%; float: left">Passo a Passo: </a>                        
+                        <a>Página Inicial Colaborador</a> > <a>Selecionar Projeto</a>
+                        <p:lightBox styleClass="imagebox" id="lighbox5">  
+                            <h:outputLink value="imagens/prints/log1.png" title="Selecionar atividade">  
+                                <img src="imagens/prints/log1.png" style="height: 90px; width: 140px"/>
+                            </h:outputLink>
+                        </p:lightBox>
+                    </div>
+                    <p:separator style="width: 90%; float: left; margin-left: 5%; margin-right: 5%"/>
+                    <div style="width: 100%;">                    
+                        <div style="width: 50%; float: left; padding-right: 2%; text-align: center; padding: 10px 20px 20px 10px">
+                            <p style="font-weight: 900">2) Enviar artefato da Atividade</p>
+                            <p>O Colaborador pode enviar o artefato oriundo de uma atividade para a supervisão dos Gerentes de Equipe.
+                                Todos os Gerentes do Projeto terão acesso à esse artefato, a fim de acompanhar o desenvolvimento do projeto
+                                em equipes distintas a sua.
+                            </p>
+                        </div>
+                        <div style="width: 50%; float: right; padding-left: 2%">
+                            <a style="font-weight: 900; width: 20%; float: left">Passo a Passo: </a>                        
+                            <a>Página Inicial ADM</a> > <a> Enviar Artefato</a>
+                            <p:lightBox styleClass="imagebox">
+                                <h:outputLink value="imagens/prints/log2.png" title="Selecionar artefato e Enviar">  
+                                    <img src="imagens/prints/log2.png" style="height: 90px; width: 140px"/>
+                                </h:outputLink>
+                            </p:lightBox>
+                        </div>                     
+                    </div>
+                    <p:separator style="width: 90%; float: left; margin-left: 5%; margin-right: 5%"/>
+                    <a name="solGer"></a>
+                    <div style="width: 100%;">                    
+                        <div style="width: 50%; float: left; padding-right: 2%; text-align: center">
+                            <p style="font-weight: 900">3) Gerente de uma Equipe</p>
+
+                            <p>O Colaborador também pode solicitar Gerência de um Projeto, esta solicitação
+                                será enviada ao Administrador do projeto para Confirmação. Entretando, um colaborador
+                                apenas possui permissão de solicitar gerência quando ele não esta alocado como Gerente
+                                no mesmo projeto.
+                            </p>
+                        </div>
+                        <div style="width: 50%; float: right; padding-left: 2%">
+                            <a style="font-weight: 900; width: 20%; float: left">Passo a Passo: </a>                        
+                            <a>Página Inicial ADM</a> > <a>Selecionar opção Cadastrar Projeto</a>
+                            <p:lightBox styleClass="imagebox">
+                                <h:outputLink value="imagens/prints/solGerencia1.png" title="Selecionar Projeto">  
+                                    <img src="imagens/prints/solGerencia1.png" style="height: 90px; width: 140px"/>
+                                </h:outputLink>
+                                <h:outputLink value="imagens/prints/solGerencia2.png" title="Confirmação de Envio">  
+                                    <img src="imagens/prints/solGerencia2.png" style="height: 90px; width: 140px"/>
+                                </h:outputLink>
+                            </p:lightBox>
+                        </div>                     
+                    </div>
+                </div>
+            </div>
+            <div style="width: 100%; float: left;  border-bottom: 5px #afafaf solid">
+                <h3 style="font-family: Adobe Heiti Std R; text-align: center">Gerente de Equipe</h3>
+                <p:separator style="width: 10%"/>
+                <div style="width: 100%; float: left">
+                    <div style="float: left; width: 50%; height: 50%; padding: 10px 10px 20px 80px">
+                        <p style="font-family: Adobe Heiti Std R">
+                            O Gerente de uma Equipe é responsável por gerenciar todo o desenvolvimento de um projeto,
+                            realizando e verificando as competências de todos os colaborados que participam de sua equipe.
+                            Este profissional tem um papel fundamental na gerência de produção...
+                        </p>
+                    </div>
+
+                    <div style="float: right; width: 50%; height: 50%; padding: 10px 20px 20px 10px">
+                        <p style="font-weight: 900">Responsabilidade</p>
+                        <p style="font-family: Adobe Heiti Std R">
+                            É responsabilidade no sistema:<br/>
+                            1) Cadastrar Equipe<br/>
+                            2) Cadastrar Atividade<br/>
+                            3) Designar Atividade para Colaborador da Equipe<br/>
+                            4) Selecionar Status da Atividade<br/>
+                            5) Gerar relatórios de sua Equipe<br/>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 100%; float: left; background-color: #fff; border-bottom: 5px #afafaf solid">
+                <h3 style="font-family: Adobe Heiti Std R; text-align: center">Permissões do Gerente de Equipe</h3>
+                <div style="width: 100%; float: left">                    
+                    <div style="width: 50%; float: left; padding-right: 2%; text-align: center; padding: 10px 20px 20px 10px">
+                        <p style="font-weight: 900">1) Cadastrar Equipe</p>
+                        <p>Quando a solicitação do Colaborador é confirmada pelo Administrador do projeto, este passa a ser Gerente.
+                            Como gerente, uma de suas tarefas é realizar o cadastro de sua equipe. Para isso será necessário cadastrar
+                            o nome e a descrição da Equipe. Devido a pluralidade do DDS é necessário que o gerente também cadastre
+                            a localização de sua equipe.
+                            Para realziar o cadastros dos Colaboradores da sua equipe, o Gerente pode optar por: <br/>
+                            1) Enviar solicitação aos Colabodores cadastrados no ProDDS ou;<br/>
+                            2) Confirmar a solicitação de cada colaborador. Desta forma, cada Colaborador que deseje integrar a Equipe
+                            deverá enviar uma solicitação.
+                        </p>
+                    </div>
+                    <div style="width: 50%; float: right; padding-left: 2%">
+                        <a style="font-weight: 900; width: 20%; float: left">Passo a Passo: </a>                        
+                        <a>Página Inicial Gerente</a> > <a>Cadastrar Equipe</a>
+                        <p:lightBox styleClass="imagebox">
+                            <h:outputLink value="imagens/prints/cadEquipe1.png" title="Cadastrar nome, descrição e atividades da equipe">  
+                                <img src="imagens/prints/cadEquipe1.png" style="height: 90px; width: 140px"/>
+                            </h:outputLink>
+                            <h:outputLink value="imagens/prints/cadEquipe2.png" title="Enviar convite de participação aos colaboradores do sistema">  
+                                <img src="imagens/prints/cadEquipe2.png" style="height: 90px; width: 140px"/>
+                            </h:outputLink>
+                            <h:outputLink value="imagens/prints/cadEquipe3.png" title="Selecionar notificação de participação">  
+                                <img src="imagens/prints/cadEquipe3.png" style="height: 90px; width: 140px"/>
+                            </h:outputLink>
+                            <h:outputLink value="imagens/prints/cadEquipe4.png" title="Confirmação participação do usuário">  
+                                <img src="imagens/prints/cadEquipe4.png" style="height: 90px; width: 140px"/>
+                            </h:outputLink>
+                        </p:lightBox>
+                    </div>  <br/>                      
+                </div>
+                <p:separator style="width: 90%; float: left; margin-left: 5%; margin-right: 5%"/>
+                <div style="width: 100%;">                    
+                    <div style="width: 50%; float: left; padding-right: 2%; text-align: center; padding: 10px 20px 20px 10px">
+                        <p style="font-weight: 900">2) Cadastrar Atividade</p>
+                        <p>Um gerente pode optar por cadastrar uma Atividade ou utilizar as atividades já
+                            previamente cadastradas pelo Administrador do Projeto. Quando um Gerente opta por cadastrar
+                            uma atividade, essa deverá pertencer a uma fase do Ciclo de Vida que o projeto utiliza.
+                        </p>
+                    </div>
+                    <div style="width: 50%; float: right; padding-left: 2%">
+                        <a style="font-weight: 900; width: 20%; float: left">Passo a Passo: </a>                        
+                        <a>Página Inicial Gerente</a> > <a>Cadastrar Atividade</a>
+                        <p:lightBox styleClass="imagebox">
+                            <h:outputLink value="imagens/prints/cadAtividade1.png" title="Cadastrar nome, descrição, pré-requisitos e atividades sucessoras. Selecionar fase do Processo">  
+                                <img src="imagens/prints/cadAtividade1.png" style="height: 90px; width: 140px"/>
+                            </h:outputLink>
+                        </p:lightBox>
+                    </div>  <br/>                      
+                </div>
+                <p:separator style="width: 90%; float: left; margin-left: 5%; margin-right: 5%"/>
+                <div style="width: 100%;">                    
+                    <div style="width: 50%; float: left; padding-right: 2%; text-align: center; padding: 10px 20px 20px 10px">
+                        <p style="font-weight: 900">3) Designar Atividade para Colaborador da Equipe</p>
+                        <p>Um gerente deve designar atividades para todos os membros da sua equipe. Desta forma
+                            ele pode escolher por selecionar as atividades pertencentes ao projeto (atividades cadastradas
+                            pelo Administrador ou por ele mesmo) e selecionar qual Colaborador da Equipe será responsável 
+                            pelo seu desenvolvimento.
+                        </p>
+                    </div>
+                    <div style="width: 50%; float: right; padding-left: 2%">
+                        <a style="font-weight: 900; width: 20%; float: left">Passo a Passo: </a>                        
+                        <a>Página Inicial Gerente</a> > <a>Cadastrar Atividade Por Usuário</a>
+                        <p:lightBox styleClass="imagebox">
+                            <h:outputLink value="imagens/prints/cadAtvUsu1.png" title="Cadastrar atividade e colaborador cadastrado na Equipe">  
+                                <img src="imagens/prints/cadAtvUsu1.png" style="height: 90px; width: 140px"/>
+                            </h:outputLink>
+                        </p:lightBox>
+                    </div>  <br/>                      
+                </div>
+                <p:separator style="width: 90%; float: left; margin-left: 5%; margin-right: 5%"/>
+                <div style="width: 100%;">                    
+                    <div style="width: 50%; float: left; padding-right: 2%; text-align: center; padding: 10px 20px 20px 10px">
+                        <p style="font-weight: 900">4) Selecionar Status da Atividade</p>
+                        <p>O Gerente pode modificar o Status de uma Atividade que um Colaborador vem desenvolvendo.
+                            Sendo assim, os estados possíveis são:<br/>
+                            1) Desenvolvimento: A Atividade pode ser desenvolvida pelo usuário<br/>
+                            2) Concluído: A Atividade não poderá ser desenvolvida pelo usuário, pois a mesma
+                            está completa.
+                        </p>
+                    </div>
+                    <div style="width: 50%; float: right; padding-left: 2%">
+                        <a style="font-weight: 900; width: 20%; float: left">Passo a Passo: </a>                        
+                        <a>Página Inicial Gerente</a> > <a>Cadastrar Status de Atividade</a>
+                        <p:lightBox styleClass="imagebox">
+                            <h:outputLink value="imagens/prints/cadAtvStatus1.png" title="Selecionar atividade e modificar seu Status para Em Desenvolvimento ou Concluído">  
+                                <img src="imagens/prints/cadAtvStatus1.png" style="height: 90px; width: 140px"/>
+                            </h:outputLink>
+                        </p:lightBox>
+                    </div>  <br/>                      
+                </div>
+                <p:separator style="width: 90%; float: left; margin-left: 5%; margin-right: 5%"/>
+                <div style="width: 100%;">                    
+                    <div style="width: 50%; float: left; padding-right: 2%; text-align: center; padding: 10px 20px 20px 10px">
+                        <p style="font-weight: 900">5) Gerar relatórios de sua Equipe</p>
+                        <p>O Gerente também pode, no âmbito de seus deveres, acompanhar o desenvolvimento do Projeto a
+                            partir da consulta de todos os relatórios sobre os Log's individuais da sua Equipe.
+                            Em cada Log é constato a Colaborador, a Atividade, a Hora e a Data de início e término
+                        </p>
+                    </div>
+                    <div style="width: 50%; float: right; padding-left: 2%">
+                        <a style="font-weight: 900; width: 20%; float: left">Passo a Passo: </a>                        
+                        <a>Página Inicial Gerente</a> > <a>Consultar Relatório</a>
+                        <p:lightBox styleClass="imagebox">
+                            <h:outputLink value="imagens/prints/relatorio.png" title="Acesso ao Log de todos os colaboradores da Equipe">  
+                                <img src="imagens/prints/relatorio.png" style="height: 90px; width: 140px"/>
+                            </h:outputLink>
+                        </p:lightBox>
+                    </div>  <br/>                      
+                </div>
+            </div>
+            <div style="width: 100%; float: left; padding-top: 20px">
+                <h4 style="font-family: Adobe Heiti Std R; text-align: center">SOBRE O ProDDS</h4>
+                <div style="float: left; width: 50%; padding: 5% 3% 2% 5%;">
+                    <p>O ProDDS é resultado de um trabalho de conclusão de curso. O foco de pesquisa foi identificado a partir
+                    de uma pesquisa de iniciação cientifíca concentrada neste tema. A partir de seu desenvolvimento
+                    foi procurado oferecer uma solução de sistema capaz de auxiliar o gerenciamento de produção em ambientes DDS.
+                    </p>
+                </div>
+                <div style="float: right; width: 50%; padding: 3% 3% 2% 5%">
+                    <h3>Contato</h3>
+                    <p>williamsimao@outlook.com</p>
+                </div>
+            </div>
+        </div>            
+    </h:body>
+</html>

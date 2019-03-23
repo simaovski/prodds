@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Página Pessoal</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style type="text/css">    
+            @import url('../css/novoCss.css');
+            @import url(../css/bootstrap.min.css);
+            @import url(../css/icones.css);
+            @import url(../css/bootstrap.css);
+        </style> 
+        <link rel="shortcut icon" href="../imagens/header.png" />
+    </h:head>
+    <h:body>
+        <c:if test="#{relatorioGerBEAN.permissao() == true}">
+            <h:form>
+                <p:remoteCommand name="rc"  action="#{relatorioGerBEAN.encerrarSecao()}"/>
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:outputLabel value="..::ProDDS::.." style="padding: 5px 30px 0px 30px; font-weight: 900;"/>
+                        <p:separator/>
+                        <p:commandLink value="Bem Vindo #{relatorioGerBEAN.retornaUsuario().nomeusuario}"  style="padding: 5px 0px 0px 30px"/>
+                    </p:toolbarGroup>
+
+                    <p:toolbarGroup align="right">
+                        <p:menuButton value="Conta">
+                            <p:menuitem value="Perfil" url="ALTs/altUsuario.xhtml" />
+                            <p:menuitem value="Logout" onclick="rc()">
+                            </p:menuitem>
+                        </p:menuButton>
+                    </p:toolbarGroup>
+
+                </p:toolbar>
+            </h:form>
+            <a href="../pgPessoalGer.xhtml" style="text-decoration:none;">
+                <h2 class="logoProd">#{relatorioGerBEAN.p.nomeprojeto}</h2>
+                <h4 class="logoProd" style="font-size: 12px">Descrição: #{relatorioGerBEAN.p.descricao}</h4>
+            </a>
+            <div class="pgMem">
+                <p class="refPag">Relatórios - Gerente</p>
+            </div>
+            <div class="navPgMem">
+                <h:form style="padding: 10px 10px 10px 10px">
+                    <p:outputLabel value="Pesquisar:" style="float: left; width: 10%; padding-top: 8px"/>
+                    <p:inputText class="form-control" value="#{relatorioGerBEAN.pesq}" placeholder="Digite o nome do usuário ou atividade" style="float: left; width: 75%; margin-right: 2%"/>
+                    <p:selectOneMenu value="#{relatorioGerBEAN.pesquisa}" required="true" requiredMessage="É necessário selecionar sua função">
+                        <f:selectItem itemLabel="Usuário" itemValue="1" />
+                        <f:selectItem itemLabel="Atividade" itemValue="2" />
+                    </p:selectOneMenu>
+                    <p:commandButton action="#{relatorioGerBEAN.pesquisar}" 
+                                     icon="ui-icon-search" 
+                                     style="margin-left: 10px; padding: 10px 0px 0px 0px;"
+                                     oncomplete="dialogPesq.show()"
+                                     update="dialog"/><br/><br/>
+                    <p:dialog widgetVar="dialogPesq" id="dialog" modal="true">
+                        <p:dataTable value="#{relatorioGerBEAN.logPesq}" 
+                                 var="log" 
+                                 emptyMessage="Nenhum log foi cadastrado"
+                                  paginator="true" rows="10">
+                        <p:column headerText="Colaborador" style="text-align: center">
+                            <p:outputLabel value="#{log.idusuario.nomeusuario}"/>
+                        </p:column>
+                        <p:column headerText="Atividade" style="text-align: center">
+                            <p:outputLabel value="#{relatorioGerBEAN.retornaAtividade(log.atividade)}"/>
+                        </p:column>
+                        <p:column headerText="Hora de início" style="text-align: center">
+                            <p:outputLabel value="#{log.horainicio}"/>
+                        </p:column>
+                        <p:column headerText="Hora de término" style="text-align: center">
+                            <p:outputLabel value="#{log.horafim}"/>
+                        </p:column>
+                        <p:column headerText="Data de início" style="text-align: center">
+                            <p:outputLabel value="#{log.datainicio}"/>
+                        </p:column>
+                        <p:column headerText="Data de término" style="text-align: center">
+                            <p:outputLabel value="#{log.datafim}"/>
+                        </p:column>
+                    </p:dataTable>
+                    </p:dialog>
+                    Log's individuais dos membros da sua equipe
+                    <p:dataTable value="#{relatorioGerBEAN.retornaLogs()}" 
+                                 var="log" 
+                                 emptyMessage="Nenhum log foi cadastrado"
+                                  paginator="true" rows="10">
+                        <p:column headerText="Colaborador" style="text-align: center">
+                            <p:outputLabel value="#{log.idusuario.nomeusuario}"/>
+                        </p:column>
+                        <p:column headerText="Atividade" style="text-align: center">
+                            <p:outputLabel value="#{relatorioGerBEAN.retornaAtividade(log.atividade)}"/>
+                        </p:column>
+                        <p:column headerText="Hora de início" style="text-align: center">
+                            <p:outputLabel value="#{log.horainicio}"/>
+                        </p:column>
+                        <p:column headerText="Hora de término" style="text-align: center">
+                            <p:outputLabel value="#{log.horafim}"/>
+                        </p:column>
+                        <p:column headerText="Data de início" style="text-align: center">
+                            <p:outputLabel value="#{log.datainicio}"/>
+                        </p:column>
+                        <p:column headerText="Data de término" style="text-align: center">
+                            <p:outputLabel value="#{log.datafim}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </div>
+            
+        </c:if>
+        
+        <c:if test="#{relatorioGerBEAN.permissao() == false}">
+            <div class="cabecalho">
+                <div class="index">
+                    <h1 class="titulo"><span><a class="tituloProd" href="#">ProDDS</a></span></h1>
+                    <h3 class="sub">Administrador</h3>
+                </div>
+            </div>
+            <div>
+                <span><img class="acessoNegado" src="imagens/acessoNegado.jpg"/></span>
+            </div>
+        </c:if>
+    </h:body>
+</html>

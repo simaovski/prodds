@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>       
+        <style type="text/css">    
+            @import url(../css/ProDDSStyle.css); 
+            @import url(../css/bootstrap.min.css);
+            @import url(css/icones.css);
+            @import url(../css/bootstrap.css);
+        </style> 
+        <link rel="shortcut icon" href="imagens/header.png" />
+        <title>Cadastrar Membro</title>
+        <meta charset="UTF-8"/>
+    </h:head>
+    <h:body>
+        <c:if test="#{membroBEAN.permissao() == true}">
+        <div class="cabecalho">
+            <div class="index">
+                <h1 class="titulo"><span><a class="tituloProd" href="../pgPessoalGer.xhtml">ProDDS</a></span></h1>
+                <h3 class="sub">Gerente</h3>
+            </div>
+        </div>
+        <div>
+            <h:form>
+                <p:dataTable value="#{membroBEAN.ntfs}" var="ntf" class="tabCad">
+                    <f:facet name="header">
+                        Notificações
+                    </f:facet>
+                    <p:column headerText="Usuário">
+                        <h:outputText value="#{ntf.idusuario.nomeusuario}"/>
+                    </p:column>
+                    <p:column headerText="E-mail usuário">
+                        <h:outputText value="#{ntf.idusuario.emailusuario}" />
+                    </p:column>
+                    <p:column headerText="Projeto">
+                        <h:outputText value="#{ntf.idprojeto.nomeprojeto}" />
+                    </p:column>
+                    <p:column headerText="Equipe">
+                        <h:outputText value="#{ntf.idequipe.nomeequipe}" />
+                    </p:column>
+                    <p:column style="width:24px" headerText="Autenticar">
+                        <p:commandButton icon="ui-icon-circle-check" action="#{membroBEAN.autenticar(ntf, true)}"/>
+                    </p:column>
+                    
+                    <p:column style="width:24px" headerText="Negar">
+                        <p:commandButton icon="ui-icon-circle-close" action="#{membroBEAN.autenticar(ntf, false)}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+        </c:if>
+        <c:if test="#{membroBEAN.permissao() == false}">
+            <div class="cabecalho">
+                <div class="index">
+                    <h1 class="titulo"><span><a class="tituloProd" href="#{membroBEAN.direcionaUrl()}">ProDDS</a></span></h1>
+                    <h3 class="sub">Cadastrar Membro</h3>
+                </div>
+            </div>
+            <div>
+                <span><img class="acessoNegado" src="../imagens/acessoNegado.jpg"/></span>
+            </div>
+        </c:if>
+    </h:body>
+</html>

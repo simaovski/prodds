@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>       
+        <style type="text/css">    
+            @import url(css/ProDDSStyle.css); 
+            @import url(css/bootstrap.min.css);
+            @import url(css/icones.css);
+            @import url(css/bootstrap.css);
+            @import url('css/novoCss.css');
+        </style> 
+        <link rel="shortcut icon" href="imagens/header.png" />
+        <title>Página Pessoal</title>
+        <meta charset="UTF-8"/>
+    </h:head>
+    <h:body>
+        <c:if test="#{pgPessoalMemBEAN.permissao() == true}">
+            <div class="fundoPagina">
+                <h:form>
+                    <p:remoteCommand name="rc"  action="#{pgPessoalMemBEAN.encerrarSecao()}"/>
+                    <p:toolbar>
+                        <p:toolbarGroup align="left">
+                            <p:outputLabel value="..::ProDDS::.." style="padding: 2px 10px 2px 30px"/>
+                            <p:separator/>
+                            <p:commandLink value="Bem Vindo #{pgPessoalMemBEAN.retornaUsuario().nomeusuario}"  style="padding: 5px 0px 0px 30px"/>
+                            <p:separator/>
+                        </p:toolbarGroup>
+
+                        <p:toolbarGroup align="right">
+                            <p:commandButton class="btn-danger" style="background-color: #red" id="btnPend"  icon="ui-icon-arrow-1-s" value="#{pgPessoalMemBEAN.pendencias}"/>
+                            <p:overlayPanel for="btnPend" hideEffect="fade" dynamic="true" style="width:30%">
+                                <p:dataTable var="proc" value="#{pgPessoalMemBEAN.listaGerPro}"  emptyMessage="Você não possui pendências de Gerência">
+                                    <p:column headerText="Gerente de Processo">
+                                        <p:commandLink value="Projeto: #{proc.idprojeto.nomeprojeto}" 
+                                               class="btn-link" 
+                                               style="color: #2a6496"
+                                               oncomplete="dialogConfGer.show()"
+                                               action="#{pgPessoalMemBEAN.redirecionarPendencia(proc)}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:overlayPanel>
+                            <p:menuButton value="Conta" style="padding-left: 10px">
+                                <p:menuitem value="Perfil" url="ALTs/altUsuario.xhtml" icon="ui-icon-person"/>
+                                <p:menuitem value="Logout" onclick="rc()" icon="ui-icon-power">
+                                </p:menuitem>
+                            </p:menuButton>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                </h:form>
+                <a href="index.xhtml" style="text-decoration:none;">
+                    <h1 class="logoProd">ProDDS</h1>
+                </a>
+                <div class="pgMem">
+                    <p class="refPag">Página Pessoal</p>
+                </div>
+                <div class="navPgMem">
+                    <h:form>
+                        <div class="navMem" >
+                            <h3 class="menu">Opções</h3>
+                            <p:commandLink class="link btn btn-danger" style="width: 170px" 
+                                           value="Notificações: #{pgPessoalMemBEAN.notificacoes}"
+                                           id="movieBtn"/>
+                            <p:overlayPanel id="moviePanel" for="movieBtn" hideEffect="fade" dynamic="true" style="width:30%">
+                                <p:dataTable value="#{pgPessoalMemBEAN.listaNotGer}"  var="noti" emptyMessage="Sem notificações">
+                                    <p:column headerText="Solicitações de Participação em Equipes">
+                                        <p:commandLink value="Usuario: #{noti.idusuario.nomeusuario} - 
+                                               Equipe: #{noti.idequipe.nomeequipe}" 
+                                               class="btn-link" 
+                                               style="color: #2a6496"
+                                               oncomplete="dialogConf.show()"
+                                               action="#{pgPessoalMemBEAN.notificacaoSelecionada(noti)}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:overlayPanel>
+                            <p:dialog showEffect="fade" hideEffect="explode" widgetVar="dialogConf" modal="true" header="Confirmar" closeOnEscape="true">
+                                Confirmar usuário na equipe?<br/>
+                                <p:commandButton value="Sim" icon="ui-icon-check" action="#{pgPessoalMemBEAN.salvarMembro}"/>
+                                <p:commandButton value="Não" icon="ui-icon-close" action="#{pgPessoalMemBEAN.naoSalvarMembro}"/>
+                            </p:dialog>
+                            <p:separator/>
+                            <p:commandLink class="link btn btn-primary" style="width: 170px" value="Solicitar Gerência" action="#{pgPessoalMemBEAN.solicitarGerencia()}"/><br/>
+                            <p:separator/>
+                            <p:commandLink class="link btn btn-primary" style="width: 170px" value="Solicitar Equipe" action="#{pgPessoalMemBEAN.solicitarEquipe()}"/><br/>
+                            <p:separator/>
+                            <p:commandLink class="link btn btn-primary" style="width: 170px" value="Registrar Log"/><br/>
+                            <p:separator/>
+                            <p:commandLink class="link btn btn-primary" style="width: 170px" value="Consultar Log" action="#{pgPessoalMemBEAN.verLog()}"/><br/>
+                            <p:separator/>
+                        </div>
+                        
+                        <div class="navProjMem">
+                            <p:dataList value="#{pgPessoalMemBEAN.listaEqp}" var="eqp" type="ordered" emptyMessage="Você não participa de nenhuma equipe">
+                                <f:facet name="header">
+                                    Meus Projetos
+                                </f:facet>
+                                <p:outputLabel value="#{eqp.idequipe.idprojeto.nomeprojeto}" style="color: #2b669a"/><br/>
+                                <p:outputLabel value="Membro da Equipe #{eqp.idequipe.nomeequipe}" style="color: #000"/><br/>
+                                <p:outputLabel value="#{pgPessoalMemBEAN.atividades(eqp)}" style="color: #ff8a00"/>
+                                <p:commandButton value="Participar" 
+                                                 icon="ui-icon-folder-open" 
+                                                 style="float: right;"
+                                                 action="#{pgPessoalMemBEAN.registroLog(eqp)}"/><br/>
+                                <p:separator/>
+                            </p:dataList>
+                            <p:dataList value="#{pgPessoalMemBEAN.listaGer}" var="ger" type="ordered" emptyMessage="Você não é gerente de nenhum projeto">
+                                <p:outputLabel value="#{ger.projeto.nomeprojeto} - Gerente" style="color: #2b669a"/><br/>
+                                <h:outputLabel value="#{ger.projeto.descricao}" style="font-size: 12px;"/><br/>
+                                <p:commandButton value="Gerenciar" action="#{pgPessoalMemBEAN.pgPessoalGer(ger.projeto.id)}" icon="ui-icon-folder-open" style="float: right"/><br/>
+                                <p:separator/>
+                            </p:dataList>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+        </c:if>
+        
+        <c:if test="#{pgPessoalMemBEAN.permissao() == false}">
+            <div class="cabecalho">
+                <div class="index">
+                    <h1 class="titulo"><span><a class="tituloProd" href="#{statusProjetoBEAN.direcionaUrl()}">ProDDS</a></span></h1>
+                    <h3 class="sub">Membro</h3>
+                </div>
+            </div>
+            <div>
+                <span><img class="acessoNegado" src="imagens/acessoNegado.jpg"/></span>
+            </div>
+        </c:if>
+    </h:body>
+</html>

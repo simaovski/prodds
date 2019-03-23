@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Gerenciar Fases</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style type="text/css">    
+            @import url(../css/novoCss.css);
+            @import url(../css/bootstrap.min.css);
+            @import url(../css/icones.css);
+            @import url(../css/bootstrap.css);
+        </style> 
+        <style type="text/css">
+            .datalist-noborder .ui-widget-content {
+            border: none;
+            }
+        </style>
+        <link rel="shortcut icon" href="../imagens/header.png" />
+    </h:head>
+    <h:body>
+        <c:if test="#{gerFaseBEAN.permissao() == true}">
+            <h:form>
+                <p:remoteCommand name="rc"  action="#{gerFaseBEAN.encerrarSecao()}"/>
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:outputLabel value="..::ProDDS::.." style="padding: 5px 30px 0px 30px; font-weight: 900;"/>
+                        <p:separator/>
+                        <p:commandLink value="Bem Vindo #{gerFaseBEAN.retornaUsuario().nomeusuario}"  style="padding: 5px 0px 0px 30px"/>
+                    </p:toolbarGroup>
+
+                    <p:toolbarGroup align="right">
+                        <p:menuButton value="Conta">
+                            <p:menuitem value="Perfil" url="ALTs/altUsuario.xhtml" />
+                            <p:menuitem value="Logout" onclick="rc()">
+                            </p:menuitem>
+                        </p:menuButton>
+                    </p:toolbarGroup>
+
+                </p:toolbar>
+            </h:form>
+            <a href="../pgPessoalAdm.xhtml" style="text-decoration:none;">
+                <h1 class="logoProd">ProDDS</h1>
+            </a>
+            <div class="pgMem">
+                <p class="refPag">Gerenciar fases</p>
+            </div>
+            <div class="navPgMem">
+                <h:form id="form">
+                    <div style="width: 100%; float: left; padding: 10px 10px 10px 10px">
+                        <p:panel header="Processo: #{gerFaseBEAN.fase.idprocesso.nomeprocesso}">
+                            <h:inputHidden value="#{gerFaseBEAN.fase.id}"/>
+                            <p:outputLabel value="Fase "/>
+                            <h:inputText value="#{gerFaseBEAN.fase.nomefase}" class="form-control" id="idInput"/><br/>
+                            <p:outputLabel value="Descrição"/>
+                            <h:inputTextarea value="#{gerFaseBEAN.fase.descricaofase}" class="form-control"/><br/>
+                            <p:commandButton value="Salvar" 
+                                             action="#{gerFaseBEAN.alterar}">
+                            </p:commandButton>
+                        </p:panel>
+                    </div>
+                    <div style="width: 100%; float: left; padding: 10px 10px 10px 10px">
+                    <p:outputLabel value="Selecione a Fase: " style="float: left; padding-top: 8px"/><br/><br/>
+                    <p:multiSelectListbox value="#{gerFaseBEAN.faseId}" effect="slide">
+                        <f:selectItems value="#{gerFaseBEAN.lista}" var="obj" itemValue="#{obj.value}"/>
+                    </p:multiSelectListbox>
+                    </div>
+                    <div style="width: 100%; float: right; padding: 10px 10px 10px 10px">
+                    
+                    <p:commandButton value="Selecionar" icon="ui-icon-pencil" action="#{gerFaseBEAN.selecionar}" update="form"
+                                        style="float: left; padding-top: -8px;"/>
+                    
+                    <p:commandButton value="Remover" icon="ui-icon-trash" action="#{gerAtividadeBEAN.alterar}" update="form"
+                                     style="float: left; padding-top: -8px; margin-left: 30px" oncomplete="dialog.show()"/>
+                    
+                    </div>
+                </h:form>
+            </div>
+            
+        </c:if>
+        
+        <c:if test="#{gerFaseBEAN.permissao() == false}">
+            <div class="cabecalho">
+                <div class="index">
+                    <h1 class="titulo"><span><a class="tituloProd" href="#{statusProjetoBEAN.direcionaUrl()}">ProDDS</a></span></h1>
+                    <h3 class="sub">Administrador</h3>
+                </div>
+            </div>
+            <div>
+                <span><img class="acessoNegado" src="imagens/acessoNegado.jpg"/></span>
+            </div>
+        </c:if>
+    </h:body>
+</html>

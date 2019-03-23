@@ -1,0 +1,137 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 01/05/2014, 21:39:06
+    Author     : padrao
+*/
+
+.cabecalho{
+    background-image: url('../imagens/heade2r.jpg');
+    padding-top: 60px;
+    padding-bottom: 70px;
+    background-size: 100% 100%
+}
+
+.index{
+    text-align: center;
+    color: aliceblue;
+    color: #fff;
+
+}
+
+.titulo{
+    font-family: candara;
+    font-style: initial;
+    font-size: 70px;
+}
+
+.templateInicio{
+    padding-top: 30px;
+    padding-bottom: 30px;
+    text-align: center;
+    color: aliceblue;
+    font-family: candara;
+    font-style: initial;
+    color: #000;
+    font-size: 20px;
+}
+
+.btnLarg{
+    width: 100px;
+    height: 35px;
+}
+.espaco{
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.linha{
+    border-width: 1px 1px 1px 1px;    
+}
+
+h3{
+    font-style: initial;
+}
+
+.sticks{
+    text-align: center;
+}
+
+.stickAtiv, .stickEquipe, .stickProd{
+    width: 150px;
+    height: 150px;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+.stickAtiv:hover, .stickEquipe:hover, .stickProd:hover{
+    opacity: 0.8;
+    
+}
+
+.cad{
+    float: left;
+    padding-top: 2%;
+    padding-left: 10px;
+    width: 65%;
+}
+
+.figuraCadProcesso{
+    float: right;
+    width: 30%;;    
+}
+
+.cadFormImagem{
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.figuraLogin{
+    padding-top: 5%;
+    float: right;
+    width: 30%;    
+}
+
+.tituloProd:hover{
+    text-decoration: none;
+}
+
+.tabCad{
+    float: left;
+    width: 800px;
+    padding: 20px 20px 20px 20px;
+}
+
+.inputShowBox{
+    width: 700px;
+    
+}
+
+.acessoNegado{
+    width: 430px;
+    height: 400px;
+    display: block; 
+    margin-left: auto; 
+    margin-right: auto; 
+}
+
+.form-teste{
+    padding: 100px 100px 100px 100px;
+    margin: 100px 100px 100px 100px;
+}
+
+.formatarSaida{
+    margin-bottom: 1000px;
+}
+
+.stickGer{
+    background-image: url('../imagens/pgGerente.jpg');
+}
+
+.selectManyCheck{
+    display: block;
+    font-size: 12px;
+}
+

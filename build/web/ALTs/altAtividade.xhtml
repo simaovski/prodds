@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>       
+        <link rel="stylesheet" type="text/css" href="../css/ProDDSStyle.css"/>
+        <style type="text/css">    
+            @import url('../css/novoCss.css');
+            @import url(../css/bootstrap.min.css);
+            @import url(../css/icones.css);
+            @import url(../css/bootstrap.css);
+        </style> 
+        <link rel="shortcut icon" href="../imagens/header.png" />
+        <title>Gerenciar atividade</title>
+        <meta charset="UTF-8"/>
+    </h:head>
+    <h:body>
+        <c:if test="#{gerAtividadeBEAN.permissao() == true}">
+            <h:form>
+                <p:remoteCommand name="rc"  action="#{gerAtividadeBEAN.encerrarSecao()}"/>
+                <p:toolbar style="width: 100%;">
+                    <p:toolbarGroup align="left">
+                        <p:outputLabel value="..::ProDDS::.." style="padding: 5px 30px 0px 30px; font-weight: 900;"/>
+                        <p:separator/>
+                        <p:commandLink value="Bem Vindo #{gerAtividadeBEAN.retornaUsuario().nomeusuario}"  style="padding: 5px 0px 0px 30px"/>
+                    </p:toolbarGroup>
+
+                    <p:toolbarGroup align="right">
+                        <p:menuButton value="Conta">
+                            <p:menuitem value="Perfil" url="../ALTs/altUsuario.xhtml" />
+                            <p:menuitem value="Logout" onclick="rc()">
+                            </p:menuitem>
+                        </p:menuButton>
+                    </p:toolbarGroup>
+
+                </p:toolbar>
+            </h:form>
+            <a href="../pgPessoalGer.xhtml" style="text-decoration:none;" class="projDesc">
+                 <h2 class="logoProd">#{gerAtividadeBEAN.p.nomeprojeto}</h2>
+                 <h4 class="logoProd" style="font-size: 12px">Descrição: #{gerAtividadeBEAN.p.descricao}</h4>
+            </a>
+            <div class="pgMem">
+                <p class="refPag">Gerenciar Atividades</p>
+            </div>        
+            <div class="navPgMem" style="padding: 10px 10px 10px 10px">
+                <h:form id="form">
+                    <p:outputLabel value="Selecione a Atividade:" style="float: left; padding-top: 8px"/>
+                    <p:selectOneMenu value="#{gerAtividadeBEAN.faseSel}" style="margin-left: 30px; float: left">
+                        <f:selectItems value="#{gerAtividadeBEAN.lista}" var="lst" itemLabel="#{lst.nomeatividade}" itemValue="#{lst.id}"/>
+                    </p:selectOneMenu>
+                    <p:commandButton value="Selecionar" icon="ui-icon-pencil" action="#{gerAtividadeBEAN.alterar}" update="form"
+                                        style="float: left; padding-top: -8px; margin-left: 30px"/>
+                    
+                    <p:commandButton value="Remover" icon="ui-icon-trash" action="#{gerAtividadeBEAN.alterar}" update="form"
+                                     style="float: left; padding-top: -8px; margin-left: 30px" oncomplete="dialog.show()"/>
+                    <p:dialog header="Confirmação" widgetVar="dialog" width="45%" height="40%" modal="true">
+                            <div>
+                                <img src="../imagens/exclamacao.jpg" style="width: 10%; float: left"/>
+                               <p style="font-size: 20px; text-align: center; color: #ff0000; width: 80%; float: right; padding-right: 10%;">Atenção</p>
+                               <p style="text-align: center; width: 80%; float: right;  padding-right: 10%">Deseja realmente excluir a atividade? #{gerAtividadeBEAN.atividade.nomeatividade}</p>
+                            </div>
+                            <div>
+                                <p:commandButton value="Sim" action="#{gerAtividadeBEAN.remover}" oncomplete="dialog.hide()"  icon="ui-icon-check" style="text-align: center; float: left; width: 30%"/>
+                                <p:commandButton value="Não" oncomplete="dialog.hide()" icon="ui-icon-cancel" style="text-align: center; float: right; width: 30%"/>
+                            </div>
+                        </p:dialog>
+                    <br/><br/>
+                    <div style="float: left; width: 100%">
+                        <h:inputHidden value="#{gerAtividadeBEAN.atividade.id}"/>
+                        
+                        <p:outputLabel value="Nome da atividade:"/>
+                        <p:inputText class="form-control" value="#{gerAtividadeBEAN.atividade.nomeatividade}" placeholder="Digite o nome da atividade. Ex: Diagrama de Classe"/>
+                        <br/>
+                        <p:outputLabel value="Fase:"/><br/>
+                        <p:selectOneMenu id="menu" value="#{gerAtividadeBEAN.idFase}">
+                            <f:selectItems value="#{gerAtividadeBEAN.retornaFases()}" var="fase" itemLabel="#{fase.nomefase}" itemValue="#{fase.id}"/>
+                        </p:selectOneMenu>
+                        <br/><br/>
+                        <p:outputLabel value="Descrição da atividade:"/>
+                        <p:inputTextarea class="form-control" value="#{gerAtividadeBEAN.atividade.descricao}" placeholder="Breve descrição sobre a atividade. Ex: Definir caracteristicas sobre..." style="height: 150px"/><br/>
+                        <p:outputLabel value="Atividades sucessoras:"/>
+                        <p:inputText class="form-control" value="#{gerAtividadeBEAN.atividade.atividadessucessoras}" placeholder="Breve descrição sobre a atividade. Ex: Definir caracteristicas sobre..."/><br/>
+
+                        <p:commandButton value="Salvar" icon="ui-icon-check" action="#{gerAtividadeBEAN.salvarAlteracao}"/>
+                    </div>      
+                </h:form>
+            </div>
+        </c:if>
+        <c:if test="#{gerAtividadeBEAN.permissao() == false}">
+            <div class="cabecalho">
+            <div class="index">
+                <h1 class="titulo"><span><a class="tituloProd" href="#{gerAtividadeBEAN.direcionaUrl()}">ProDDS</a></span></h1>
+                <h3 class="sub">Gerenciar atividades</h3>
+            </div>
+        </div>
+            <div>
+                <span><img class="acessoNegado" src="../imagens/acessoNegado.jpg"/></span>
+            </div>
+        </c:if>
+
+    </h:body>
+</html>

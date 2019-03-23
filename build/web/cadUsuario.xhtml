@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Cadastrar Usuário</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style type="text/css">    
+            @import url(css/ProDDSStyle.css); 
+            @import url(css/bootstrap.min.css);
+            @import url(css/icones.css);
+            @import url(css/bootstrap.css);
+        </style> 
+        <link rel="shortcut icon" href="imagens/header.png" />
+    </h:head>
+    <h:body>
+        <div class="cabecalho">
+            <div class="index">
+                <h1 class="titulo"><span><a class="tituloProd" href="index.xhtml">ProDDS</a></span></h1>
+                <h3 class="sub">Cadastrar Usuário</h3>
+            </div>
+        </div>
+        <div class="cadFormImagem">
+            <div class="cad">
+                <h:form>
+                    <div class="form-group">
+                    <p:messages autoUpdate="true"/>
+                    <p:growl id="growl" showDetail="true" sticky="true" />
+                    <p:panel id="panel" header="Projeto" style="margin-bottom:10px;">
+                        <h:outputLabel for="name" value="Nome:" style="font-weight:bold"/><br/>
+                        <p:inputText id="name" value="#{usuarioBEAN.nomeUsuario}" class="form-control" placeholder="Digite seu nome" required="true" requiredMessage="É necessário digitar seu primeiro nome">
+                            
+                        </p:inputText>
+                        <br/>
+                        <h:outputLabel for="email" value="E-mail:" style="font-weight:bold" /><br/>
+                        <p:inputText id="email" value="#{usuarioBEAN.emailUsuario}" class="form-control" placeholder="Digite seu e-mail" required="true" requiredMessage="E-mail inválido" validatorMessage="E-mail inválido">
+                            <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                        </p:inputText>
+                        
+                        <br/>
+                        <h:outputLabel for="senha" value="Senha:" style="font-weight:bold" /><br/>
+                        <p:password id="senha" value="#{usuarioBEAN.senhaUsuario}" class="form-control" placeholder="Digite sua senha" required="true" requiredMessage="É necessário digitar uma senha" validatorMessage="A senha deve possuir ao menos 6 dígitos">
+                            <f:validateLength minimum="6"/>
+                        </p:password>
+                        <br/>
+                        <p:outputLabel value="Selecione sua função:" style="font-weight:bold"/><br/>    
+                        <p:selectOneMenu id="funcao" value="#{usuarioBEAN.idFuncao}" required="true" requiredMessage="É necessário selecionar sua função">
+                            <f:selectItem itemLabel="Administrador de projeto" itemValue="1" />
+                            <f:selectItem itemLabel="Membro de equipe" itemValue="2" />
+                        </p:selectOneMenu>
+
+                        <br/>
+                        <p:commandButton value="Cadastrar" icon="ui-icon-disk" action="#{usuarioBEAN.salvar}"/>
+                        <a class="espaco"/>
+                        <p:commandButton value="Apagar Campos" icon="ui-icon-alert" action="#{usuarioBEAN.limpar}"/>
+                    </p:panel>  
+                    </div>
+                </h:form>
+            </div>
+            <div>
+                <span><img src="imagens/usuario.jpg" class="figuraCadProcesso"/></span>
+            </div>
+        </div>
+    </h:body>
+</html>

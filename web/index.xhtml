@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>       
+        <style type="text/css">    
+            @import url('css/ProDDSStyle.css'); 
+        </style> 
+        <link rel="stylesheet" href="css/bootstrap.min.css"/>
+        <link rel='stylesheet' type='text/css' href='css/icones.css'/>
+        <link rel="stylesheet" href="css/bootstrap.css"/>
+        
+        <link rel="shortcut icon" href="imagens/header.png" />
+        <title>ProDDS</title>
+        <meta charset="UTF-8"/>
+    </h:head>
+    <body>
+        <div class="cabecalho">
+            <div class="index">
+                <h1 class="titulo">ProDDS - GESTOR DE PRODUÇÃO</h1>
+                <h3 class="sub">EM AMBIENTES DE DESENVOLVIMENTO DISTRIBUIDO</h3>
+                    <h:form>
+                        <p:commandButton value="Login" class="btnLarg" action="login.xhtml?faces-redirect=true"/>
+                        <a class="espaco"/>
+                        <p:commandButton value="Cadastrar" class="btnLarg" action="cadUsuario.xhtml?faces-redirect=true"/>
+                    </h:form>                    
+            </div>
+        </div>
+            <div class="templateInicio">   
+                <h2>Como gerenciar?</h2>
+                <h4>Utilize artefatos e atividades<br/>
+                para mensurar a produção individual ou de equipes<br/>
+                no ambiente DDS<br/>
+                </h4>
+            </div>    
+        <div class="sticks">
+            <span><a href="mapaDoSite.xhtml"><img src="imagens/MapaSite.jpg" class="stickAtiv"/></a></span>
+            <span><a href=""><img src="imagens/Equipe.jpg" class="stickEquipe"/></a></span>
+            <span><a href="CADs/cadProcesso.xhtml"><img src="imagens/tarefas.jpg" class="stickProd"/></a></span>            
+        </div>
+     </body>
+</html>
+

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Página Pessoal</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style type="text/css">    
+            @import url('../css/novoCss.css');
+            @import url(../css/bootstrap.min.css);
+            @import url(../css/icones.css);
+            @import url(../css/bootstrap.css);
+        </style> 
+        <link rel="shortcut icon" href="../imagens/header.png" />
+    </h:head>
+    <h:body>
+        <c:if test="#{visaoGeralGerBEAN.permissao() == true}">
+            <h:form>
+                <p:remoteCommand name="rc"  action="#{visaoGeralGerBEAN.encerrarSecao()}"/>
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:outputLabel value="..::ProDDS::.." style="padding: 5px 30px 0px 30px; font-weight: 900;"/>
+                        <p:separator/>
+                        <p:commandLink value="Bem Vindo #{visaoGeralGerBEAN.retornaUsuario().nomeusuario}"  style="padding: 5px 0px 0px 30px"/>
+                    </p:toolbarGroup>
+
+                    <p:toolbarGroup align="right">
+                        <p:menuButton value="Conta">
+                            <p:menuitem value="Perfil" url="ALTs/altUsuario.xhtml" />
+                            <p:menuitem value="Logout" onclick="rc()">
+                            </p:menuitem>
+                        </p:menuButton>
+                    </p:toolbarGroup>
+
+                </p:toolbar>
+            </h:form>
+            <a href="../pgPessoalGer.xhtml" style="text-decoration:none;">
+                <h2 class="logoProd">#{relatorioGerBEAN.p.nomeprojeto}</h2>
+                <h4 class="logoProd" style="font-size: 12px">Descrição: #{visaoGeralGerBEAN.p.descricao}</h4>
+            </a>
+            <div class="pgMem">
+                <p class="refPag">Visão Geral do Projeto</p>
+            </div>
+            <div class="navPgMem">
+                <h:form>
+                    <p:tabView orientation="left" style="padding: 0px 10px 0px 10px">
+                        <p:tab title="Projeto">
+                            <p:panel header="Informações sobre o projeto" style="margin-bottom:20px">
+                                <p:outputPanel deferred="true">
+                                    <h4 style="font-weight: 900">Administrador: </h4>
+                                    <p>#{visaoGeralGerBEAN.p.idadm.nomeusuario} - #{visaoGeralGerBEAN.p.idadm.emailusuario}</p>
+                                    
+                                    <h4 style="font-weight: 900">Ciclo de vida: </h4>
+                                    <p>#{visaoGeralGerBEAN.p.idprocesso.nomeprocesso} - (#{visaoGeralGerBEAN.p.idprocesso.descricao})</p>
+                                    
+                                    <p:dataList value="#{visaoGeralGerBEAN.p.idprocesso.fasesprocessoCollection}" var="fase">
+                                        <h4>#{fase.nomefase}</h4>
+                                        <p>#{fase.descricaofase}</p>
+                                    </p:dataList>
+                                </p:outputPanel>
+                                <c:if test="#{visaoGeralGerBEAN.pend > 0}">
+                                    <h4 style="font-weight: 900">Fase atual do projeto: #{visaoGeralGerBEAN.faseAtual}</h4>
+                                    <p:selectOneMenu value="#{visaoGeralGerBEAN.fase}">
+                                        <f:selectItems value="#{visaoGeralGerBEAN.listaFases}" var="fase"
+                                                       itemLabel="#{fase.nomefase}" itemValue="#{fase.id}" 
+                                                       itemDescription="#{fase.descricaofase}"/>
+                                    </p:selectOneMenu><br/>
+                                    <p:commandButton value="Salvar" update="dialog" oncomplete="dialogFase.show()" action="#{visaoGeralGerBEAN.carregaFase}"/>
+                                    <p:dialog id="dialog" widgetVar="dialogFase" header="Atenção" width="600px" height="200px" modal="true">
+                                        <h5 style="text-align: justify">
+                                            Selecionar a Fase: #{visaoGeralGerBEAN.faseSelecionada.nomefase} significa que apenas as atividades
+                                            desta fase poderão ser desenvolvidas pelos colaboradores.
+                                            <p:dataList value="#{visaoGeralGerBEAN.faseSelecionada.atividadesfaseprocessoCollection}" var="atv1" emptyMessage="" style="padding: 5px 5px 5px 5px">
+                                                <h5>#{atv1.nomeatividade}</h5><h6>#{atv1.descricaoatividade}</h6>
+                                            </p:dataList>
+                                            <p:dataList value="#{visaoGeralGerBEAN.faseSelecionada.atividadeCollection}" var="atv2" emptyMessage="" style="padding: 5px 5px 5px 5px">
+                                                <h5>#{atv2.nomeatividade}</h5><h6>#{atv2.descricaoatividade}</h6>
+                                            </p:dataList>
+                                        </h5>
+                                        <p:commandButton value="Selecionar" icon="ui-icon-check" action="#{visaoGeralGerBEAN.salvarFase()}" style="text-align: left;"/>                                        
+                                        <p:commandButton value="Cancelar" icon="ui-icon-cancel" action="#{visaoGeralGerBEAN.encerrarSessao()}" style="text-align: right; float: right"/>
+                                        
+                                    </p:dialog>
+                                </c:if>
+                            </p:panel>
+                        </p:tab>
+                        <p:tab title="Gerentes">
+                            Gerentes do Projeto
+                            <p:dataTable value="#{visaoGeralGerBEAN.gerentes()}" var="ger" emptyMessage="Nenhum gerente foi cadastrado ainda">
+                                <p:column headerText="Nome do Gerente">
+                                    <p:outputLabel value="#{ger.idusuariogerente.nomeusuario}"/>
+                                </p:column>
+                                <p:column headerText="E-mail do Gerente">
+                                    <p:outputLabel value="#{ger.idusuariogerente.emailusuario}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="Equipes">
+                            <p:dataTable value="#{visaoGeralGerBEAN.equipe()}" var="eqp" emptyMessage="Nenhuma equipe foi cadastrado ainda">
+                                <p:column headerText="Equipe" style="text-align: center">
+                                    <p:outputLabel value="#{eqp.nomeequipe}"/>
+                                </p:column>
+                                <p:column headerText="Gerente" style="text-align: justify">
+                                    <p:outputLabel value="#{eqp.idgerente.nomeusuario}"/>
+                                </p:column>
+                                <p:column headerText="Descrição" style="text-align: justify">
+                                    <p:outputLabel value="#{eqp.descricao}"/>
+                                </p:column>
+                                <p:column headerText="Atividades">
+                                    <p:outputLabel value="#{visaoGeralGerBEAN.Atividadesequipe(eqp)}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="Minha Equipe">
+                            Informações sobre a minha equipe #{visaoGeralGerBEAN.retornaEquipe().nomeequipe}
+                            <p:dataTable value="#{visaoGeralGerBEAN.retornaNomeColaborador()}" var="eqp" emptyMessage="Você ainda não cadastrou a sua equipe!">
+                                <p:column headerText="Nome Colaborador">
+                                    <p:outputLabel value="#{eqp.idmembro.nomeusuario}"/>
+                                </p:column>
+                                <p:column headerText="Atividade">
+                                    <p:outputLabel value="#{visaoGeralGerBEAN.retornaAtividadeMembro(eqp)}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="Minhas atividades">
+                            Atividades cadastradas neste projeto por você
+                            <p:dataTable value="#{visaoGeralGerBEAN.retornaAtividadesProjeto()}" var="ativ" emptyMessage="Você ainda não cadastrou a sua equipe!">
+                                <p:column headerText="Nome Atividade">
+                                    <p:outputLabel value="#{ativ.nomeatividade}"/>
+                                </p:column>
+                                <p:column headerText="Descrição">
+                                    <p:outputLabel value="#{ativ.descricao}"/>
+                                </p:column>
+                                <p:column headerText="Atividades Antecessoras">
+                                    <p:outputLabel value="#{visaoGeralGerBEAN.retornaAtividadesAnt(ativ)}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="Fluxo de Atividades">
+                            Log's individuais dos membros da sua equipe
+                            
+                        </p:tab>
+                    </p:tabView>
+                </h:form>
+            </div>
+            
+        </c:if>
+        
+        <c:if test="#{relatorioGerBEAN.permissao() == false}">
+            <div class="cabecalho">
+                <div class="index">
+                    <h1 class="titulo"><span><a class="tituloProd" href="#">ProDDS</a></span></h1>
+                    <h3 class="sub">Administrador</h3>
+                </div>
+            </div>
+            <div>
+                <span><img class="acessoNegado" src="imagens/acessoNegado.jpg"/></span>
+            </div>
+        </c:if>
+    </h:body>
+</html>

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>       
+        <style type="text/css">    
+            @import url(../css/ProDDSStyle.css); 
+            @import url(../css/bootstrap.min.css);
+            @import url(../css/icones.css);
+            @import url(../css/bootstrap.css);
+        </style> 
+        <link rel="shortcut icon" href="../imagens/header.png" />
+        <title>Relatórios</title>
+        <meta charset="UTF-8"/>
+    </h:head>
+    <h:body>
+        <c:if test="#{relatorioBEAN.permissao() == true}">
+            <div class="cabecalho">
+                <div class="index">
+                    <h1 class="titulo"><span><a class="tituloProd" href="#{relatorioBEAN.direciona()}">ProDDS</a></span></h1>
+                    <h3 class="sub">Relatórios</h3>
+                </div>
+            </div>
+            <div>
+                <h:form>
+                    <p:tabView orientation="left">
+                        <p:tab title="Projetos">
+                            <h:panelGrid class="table">
+                                <p:dataTable var="proj" value="#{relatorioBEAN.listaProj}">
+                                    <p:column headerText="Nome">
+                                        <h:outputText value="#{proj.nomeprojeto}" />
+                                    </p:column>
+                                    <p:column headerText="Administrador">
+                                        <h:outputText value="#{proj.idadm.nomeusuario}" />
+                                    </p:column>
+                                    <p:column headerText="Gerentes" style="width: 230px; height: 60px">
+                                        <p:selectOneListbox class="form-control" style="width: 230px; height: 60px">
+                                            <f:selectItems value="#{relatorioBEAN.colecaoGer(proj)}" var="ger" itemLabel="#{ger.idusuariogerente.nomeusuario}"/>
+                                        </p:selectOneListbox>
+                                    </p:column>
+                                    <p:column headerText="Progresso" style="width: 230px; height: 60px">
+                                        <h:outputText value="#{relatorioBEAN.progresso(proj)}"/>
+                                    </p:column>
+                                    <p:column headerText="Inicio do projeto">
+                                        <h:outputText value="#{proj.datacraicao}"/>
+                                    </p:column>
+                                    <p:column headerText="Fim do projeto">
+                                        <h:outputText value="Atualizar tab. Projeto"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </h:panelGrid>
+                        </p:tab>
+                        <p:tab title="Gerentes">
+                            <h:panelGrid class="table">
+                                <p:dataTable var="ger" value="#{relatorioBEAN.listaGer}">
+                                    <p:column headerText="Nome">
+                                        <h:outputText value="#{ger.idusuariogerente.nomeusuario}"/>
+                                    </p:column>
+                                    <p:column headerText="Projeto">
+                                        <h:outputText value="#{ger.idprojeto.nomeprojeto}" />
+                                    </p:column>
+                                    <p:column headerText="Equipe" style="width: 230px">
+                                        <p:selectOneListbox class="form-control" style="width: 230px; height: 90px">
+                                            <f:selectItems value="#{relatorioBEAN.colecaoEqp(ger)}" var="eqp" itemLabel="#{eqp.nomeequipe}"/>
+                                        </p:selectOneListbox>
+                                    </p:column>
+                                </p:dataTable>
+                            </h:panelGrid>
+                        </p:tab>
+                        <p:tab title="Equipes">
+                            <h:panelGrid class="table">
+                                <p:dataTable var="eqp" value="#{relatorioBEAN.listaEqp}">
+                                    <p:column headerText="Nome">
+                                        <h:outputText value="#{eqp.nomeequipe}"/>
+                                    </p:column>
+                                    <p:column headerText="Projeto">
+                                        <h:outputText value="#{eqp.idprojeto.nomeprojeto}" />
+                                    </p:column>                                    
+                                    <p:column headerText="Gerente">
+                                        <h:outputText value="#{eqp.idgerente.nomeusuario}" />
+                                    </p:column>                                    
+                                    <p:column headerText="Membros" style="width: 230px">
+                                        <p:selectOneListbox class="form-control" style="width: 230px; height: 90px">
+                                            <f:selectItems value="#{relatorioBEAN.colecaoMem(eqp)}" var="mem" itemLabel="#{mem.idusuario.nomeusuario}"/>
+                                        </p:selectOneListbox>
+                                    </p:column>
+                                </p:dataTable>
+                            </h:panelGrid>
+                        </p:tab>
+                        <p:tab title="Membros">
+                            <h:panelGrid class="table">
+                                <p:dataTable var="mem" value="#{relatorioBEAN.listaMem}">
+                                    <p:column headerText="Nome">
+                                        <h:outputText value="#{mem.idusuario.nomeusuario}"/>
+                                    </p:column>
+                                    <p:column headerText="Equipe">
+                                        <h:outputText value="#{mem.idequipe.nomeequipe}" />
+                                    </p:column>                                    
+                                    <p:column headerText="Projeto">
+                                        <h:outputText value="#{mem.idprojeto.nomeprojeto}" />
+                                    </p:column>
+                                    <p:column headerText="Atividades" style="width: 230px">
+                                        <p:selectOneListbox class="form-control" >
+                                            <f:selectItems value="#{relatorioBEAN.colecaoAtv(mem)}" var="atv" itemLabel="#{atv.idatividade.nomeatividade}"/>
+                                        </p:selectOneListbox>
+                                    </p:column>
+                                </p:dataTable>
+                            </h:panelGrid>
+                        </p:tab>
+                        <p:tab title="Logs">
+                            
+                            <h:form id="formPesquisa">
+                                <p:outputLabel value="Pesquisar por usuário:" style="padding-right: 20px"/>
+                                <p:inputText value="#{relatorioBEAN.pesquisa}" placeholder="Digite o nome do usuário" style="padding-right: 20px; width: 300px"/>
+                                <p:outputLabel style="padding-left: 20px"/>
+                                <p:commandButton value="Pesquisar" oncomplete="logDialog.show()" action="#{relatorioBEAN.chamar()}" update="formPesquisa:idTable">
+                                
+                                </p:commandButton>
+                                <p:dialog header="Pesquisa Logs" id="idDialog" widgetVar="logDialog" modal="true" showEffect="fade"  resizable="false">
+                                    <h:panelGrid class="table" id="idPanel">
+                                        <p:dataTable id="idTable" var="logPesquisa" value="#{relatorioBEAN.listPesquisar}" style="height: 400px" emptyMessage="Não foram encontrados registros com este nome de usuário">
+                                            <p:column headerText="Membro">
+                                                    <h:outputText value="#{logPesquisa.idmembro.nomeusuario}"/>
+                                            </p:column>
+                                            <p:column headerText="Projeto">
+                                                <h:outputText value="#{logPesquisa.idprojeto.nomeprojeto}" />
+                                            </p:column>
+                                            <p:column headerText="Equipe">
+                                                <h:outputText value="#{logPesquisa.idequipe.nomeequipe}" />
+                                            </p:column>                                    
+                                            <p:column headerText="Atividade">
+                                                <h:outputText value="#{logPesquisa.idatividade.nomeatividade}" />
+                                            </p:column>
+                                            <p:column headerText="Data início - Data fim">
+                                                <h:outputText value="#{logPesquisa.datainicio} - #{logPesquisa.datafim}"/>
+                                            </p:column>
+                                            <p:column headerText="Hora início">
+                                                <h:outputText value="#{logPesquisa.horainicio}" />
+                                            </p:column>                                    
+                                            <p:column headerText="Hora fim">
+                                                <h:outputText value="#{logPesquisa.horafim}" />
+                                            </p:column>
+                                            <p:column headerText="Artefato">
+                                                <scan><a href="http://localhost:8084/TCC/GERs/gerArtefatos.xhtml">Baixar</a></scan>
+                                            </p:column>
+                                        </p:dataTable>
+                                        
+                                    </h:panelGrid>
+                                </p:dialog>
+                                
+                            </h:form>
+                            <h:panelGrid class="table">
+                                <p:dataTable var="log" value="#{relatorioBEAN.listaLog}">
+                                    <p:column headerText="Membro">
+                                        <h:outputText value="#{log.idmembro.nomeusuario}"/>
+                                    </p:column>
+                                    <p:column headerText="Projeto">
+                                        <h:outputText value="#{log.idprojeto.nomeprojeto}" />
+                                    </p:column>
+                                    <p:column headerText="Equipe">
+                                        <h:outputText value="#{log.idequipe.nomeequipe}" />
+                                    </p:column>                                    
+                                    <p:column headerText="Atividade">
+                                        <h:outputText value="#{log.idatividade.nomeatividade}" />
+                                    </p:column>
+                                    <p:column headerText="Data início - Data fim">
+                                        <h:outputText value="#{log.datainicio} - #{log.datafim}"/>
+                                    </p:column>
+                                    <p:column headerText="Hora início">
+                                        <h:outputText value="#{log.horainicio}" />
+                                    </p:column>                                    
+                                    <p:column headerText="Hora fim">
+                                        <h:outputText value="#{log.horafim}" />
+                                    </p:column>
+                                    <p:column headerText="Artefato">
+                                        <scan><a href="http://localhost:8084/TCC/GERs/gerArtefatos.xhtml">Baixar</a></scan>
+                                    </p:column>
+                                </p:dataTable>
+                            </h:panelGrid>
+                        </p:tab>
+                    </p:tabView>
+                </h:form>
+            </div>
+        </c:if>
+       
+        <c:if test="#{relatorioBEAN.permissao() == false}">
+            <div class="cabecalho">
+                <div class="index">
+                    <h1 class="titulo"><span><a class="tituloProd" href="../pgPessoalMem.xhtml">ProDDS</a></span></h1>
+                    <h3 class="sub">Gerente - Administrador</h3>
+                </div>
+            </div>
+            <div>
+                <span><img class="acessoNegado" src="../imagens/acessoNegado.jpg"/></span>
+            </div>
+        </c:if>
+    </h:body>
+</html>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>       
+        <style type="text/css">    
+            @import url('../css/novoCss.css'); 
+            @import url(../css/bootstrap.min.css);
+            @import url(css/icones.css);
+            @import url(../css/bootstrap.css);
+        </style> 
+        <link rel="shortcut icon" href="../imagens/header.png" />
+        <title>Gerenciar</title>
+        <meta charset="UTF-8"/>
+    </h:head>
+    <h:body>
+        <c:if test="#{cadGerenteBEAN.permissaoAdm() == true}">
+            <h:form>
+                <p:remoteCommand name="rc"  action="#{cadGerenteBEAN.encerrarSecao()}"/>
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:outputLabel value="..::ProDDS::.." style="padding: 5px 30px 0px 30px; font-weight: 900;"/>
+                        <p:separator/>
+                        <p:commandLink value="Bem Vindo #{cadGerenteBEAN.retornaUsuario().nomeusuario}"  style="padding: 5px 0px 0px 30px"/>
+                    </p:toolbarGroup>
+
+                    <p:toolbarGroup align="right">
+                        <p:menuButton value="Conta">
+                            <p:menuitem value="Perfil" url="ALTs/altUsuario.xhtml" icon="ui-icon-person"/>
+                            <p:menuitem value="Logout" onclick="rc()" icon="ui-icon-power">
+                            </p:menuitem>
+                        </p:menuButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+            </h:form>
+            <a href="../pgPessoalAdm.xhtml" style="text-decoration:none;" class="projDesc">
+                <h2 class="logoProd">ProDDS</h2>
+            </a>
+            <div class="pgMem">
+                <p class="refPag">Notificações</p>
+            </div>
+            <h:form class="navPgMem" style="padding: 10px 10px 10px 10px">  
+                <p:dataTable var="ntf" value="#{cadGerenteBEAN.notificacoes}" emptyMessage="Não existe nenhuma solicitação de gerência">
+                    <p:column headerText="Nome do Projeto">
+                        <h:outputText value="#{cadGerenteBEAN.nomeProjeto(ntf.idprojeto)}" />
+                    </p:column>
+                    <p:column headerText="Nome do usuário requisitante">
+                        <h:outputText value="#{ntf.idusuario.nomeusuario}" />
+                    </p:column>
+                    <p:column headerText="E-mail do usuário requisitante">
+                        <h:outputText value="#{ntf.idusuario.emailusuario}" />
+                    </p:column>
+                    <p:column headerText="Autenticar">
+                        <p:commandButton  icon="ui-icon-check" action="#{cadGerenteBEAN.autenticarGerente(ntf, true)}"/>
+                    </p:column>
+                    <p:column headerText="Negar">
+                        <p:commandButton icon="ui-icon-closethick" action="#{cadGerenteBEAN.autenticarGerente(ntf, false)}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </c:if>
+        <c:if test="#{cadGerenteBEAN.permissaoAdm() == false}">
+            <div class="cabecalho">
+                <div class="index">
+                    <h1 class="titulo"><span><a class="tituloProd" href="#{cadGerenteBEAN.direcionaUrl()}">ProDDS</a></span></h1>
+                    <h3 class="sub">Cadastrar Gerente</h3>
+                </div>
+            </div>
+            <div>
+                <span><img class="acessoNegado" src="../imagens/acessoNegado.jpg"/></span>
+            </div>
+        </c:if>
+    </h:body>
+</html>

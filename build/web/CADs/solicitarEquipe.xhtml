@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>       
+        <style type="text/css">    
+            @import url(../css/ProDDSStyle.css); 
+            @import url(../css/bootstrap.min.css);
+            @import url(../css/icones.css);
+            @import url(../css/bootstrap.css);
+            @import url(../css/novoCss.css);
+        </style> 
+        <link rel="shortcut icon" href="../imagens/header.png" />
+        <title>Página Pessoal</title>
+        <meta charset="UTF-8"/>
+    </h:head>
+    <h:body>
+        <c:if test="#{solicitarEquipeBEAN.permissao() == true}">
+            <div class="fundoPagina">
+                <h:form>
+                    <p:remoteCommand name="rc"  action="#{solicitarEquipeBEAN.encerrarSecao()}"/>
+                    <p:toolbar>
+                        <p:toolbarGroup align="left">
+                            <p:outputLabel value="..::ProDDS::.." style="padding: 2px 10px 2px 30px"/>
+                            <p:separator/>
+                            <p:commandLink value="Bem Vindo #{solicitarEquipeBEAN.retornaUsuario().nomeusuario}"  style="padding: 5px 0px 0px 30px"/>
+                            <p:separator/>
+                        </p:toolbarGroup>
+
+                        <p:toolbarGroup align="right">
+                            <p:menuButton value="Conta">
+                                <p:menuitem value="Perfil" url="ALTs/altUsuario.xhtml" icon="ui-icon-person"/>
+                                <p:menuitem value="Logout" onclick="rc()" icon="ui-icon-power">
+                                </p:menuitem>
+                            </p:menuButton>
+                        </p:toolbarGroup>
+
+                    </p:toolbar>
+                </h:form>
+                <a href="../pgPessoalMem.xhtml" style="text-decoration:none;">
+                    <h1 class="logoProd">ProDDS</h1>
+                </a>
+                <div class="pgMem">
+                    <p class="refPag">Solicitar Gerência</p>
+                </div>
+                <div class="navPgMem">
+                    <h:form>
+                        <div style="padding: 0px 10px 0px 10px">
+                            <p:dataTable value="#{solicitarEquipeBEAN.listaEqp}" var="eqp" emptyMessage="Não existe nenhuma equipe disponível">
+                                <p:column headerText="Projeto">
+                                    <p:outputLabel value="#{eqp.idprojeto.nomeprojeto}"/>
+                                </p:column>
+                                <p:column headerText="Equipe">
+                                    <p:outputLabel value="#{eqp.nomeequipe}"/>
+                                </p:column>
+                                <p:column headerText="Descrição">
+                                    <p:outputLabel value="#{eqp.descricao}"/>
+                                </p:column>
+                                <p:column headerText="Gerente">
+                                    <p:outputLabel value="#{eqp.idgerente.nomeusuario}"/>
+                                </p:column>
+                                <p:column headerText="Solicitar Gerência">
+                                    <p:commandButton icon="ui-icon-check" action="#{solicitarEquipeBEAN.salvar(eqp)}" oncomplete="dialogSol.show()"/>
+                                    <p:dialog widgetVar="dialogSol" modal="true" header="Sucesso!">
+                                        <p:outputLabel value="Foi enviada uma solicitação ao gerente do projeto!"/><br/>
+                                        <p:ajax listener="#{solicitarEquipeBEAN.recarregar}"/>
+                                    </p:dialog>
+                                </p:column>
+                                
+                            </p:dataTable>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+        </c:if>
+        
+        <c:if test="#{pgPessoalMemBEAN.permissao() == false}">
+            <div class="cabecalho">
+                <div class="index">
+                    <h1 class="titulo"><span><a class="tituloProd" href="#{statusProjetoBEAN.direcionaUrl()}">ProDDS</a></span></h1>
+                    <h3 class="sub">Membro</h3>
+                </div>
+            </div>
+            <div>
+                <span><img class="acessoNegado" src="imagens/acessoNegado.jpg"/></span>
+            </div>
+        </c:if>
+    </h:body>
+</html>

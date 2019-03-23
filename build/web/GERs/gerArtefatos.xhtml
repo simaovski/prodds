@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>       
+        <link rel="stylesheet" type="text/css" href="../css/ProDDSStyle.css"/>
+        <style type="text/css">    
+            @import url(../css/ProDDSStyle.css); 
+            @import url(../css/bootstrap.min.css);
+            @import url(../css/icones.css);
+            @import url(../css/bootstrap.css);
+        </style> 
+        <link rel="shortcut icon" href="../imagens/header.png" />
+        <title>Gerenciar artefatos</title>
+        <meta charset="UTF-8"/>
+    </h:head>
+    <h:body>
+        <c:if test="#{atividadeBEAN.permissao() == true}">
+            <div class="cabecalho">
+                <div class="index">
+                    <h1 class="titulo"><span><a class="tituloProd" href="../pgPessoalGer.xhtml">ProDDS</a></span></h1>
+                    <h3 class="sub">Gerenciar artefatos</h3>
+                </div>
+            </div>
+        
+            <div>
+                <h:form>   
+                    <p:messages autoUpdate="true"/>
+                    <p:panel id="panel" header="Artefatos" style="margin-bottom:10px;">
+                        <p:dataTable var="art" value="#{artefatoBEAN.listaArt}">
+                            <p:column headerText="Projeto">
+                                <p:outputLabel value="#{art.idatividademembro.idprojeto.nomeprojeto}"/>
+                            </p:column>
+                            <p:column headerText="Equipe">
+                                <p:outputLabel value="#{art.idatividademembro.idequipe.nomeequipe}"/>
+                            </p:column>
+                            <p:column headerText="Membro">
+                                <p:outputLabel value="#{art.idatividademembro.idmembro.nomeusuario}"/>
+                            </p:column>
+                            <p:column headerText="Atividade">
+                                <p:outputLabel value="#{art.idatividademembro.idatividade.nomeatividade}"/>
+                            </p:column>
+                            <p:column headerText="Nome do artefato">
+                                <p:outputLabel value="#{art.nome}"/>
+                            </p:column>
+                            <p:column headerText="Data da criação">
+                                <p:outputLabel value="#{art.datacriacao}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+            </div>
+            <p:panel id="panel" header="Download artefato" style="margin-bottom:10px;" class="">
+                    <h:form>  
+                        <h:outputLabel value="Selecione o artefato: " style="padding: 10px 10px 10px 0px" />
+                        <p:selectOneMenu value="#{artefatoBEAN.idArtefatoSelecionado}">
+                            <f:selectItems value="#{artefatoBEAN.listaArt}" var="a" itemLabel="#{a.nome}" itemValue="#{a.id}"/>
+                        </p:selectOneMenu>
+                        <br/>
+                        <p:commandButton value="Download" ajax="false" actionListener="#{artefatoBEAN.download}" icon="ui-icon-arrowthick-1-s">
+                            <p:fileDownload value="#{artefatoBEAN.file}" />
+                        </p:commandButton>
+                       
+                    </h:form>
+            </p:panel>
+        </c:if>
+        <c:if test="#{atividadeBEAN.permissao() == false}">
+            <div class="cabecalho">
+            <div class="index">
+                <h1 class="titulo"><span><a class="tituloProd" href="#{atividadeBEAN.direcionaUrl()}">ProDDS</a></span></h1>
+                <h3 class="sub">Gerenciar artefatos</h3>
+            </div>
+        </div>
+            <div>
+                <span><img class="acessoNegado" src="../imagens/acessoNegado.jpg"/></span>
+            </div>
+        </c:if>
+
+    </h:body>
+</html>
