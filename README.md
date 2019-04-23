@@ -1,6 +1,6 @@
 # ProDDS
 
-O ProDDS é fruto do meu trabalho de conclusão de curso que foi orientado pelo professor Alexandre L'Erario. O nome do projeto faz referência ao objetivo principal: gerenciar a produção de software em ambientes de desenvolvimento ditribuídos, conhecidos como DDS.
+O ProDDS possui o objetivo de gerenciar a produção de software em ambientes de desenvolvimento ditribuídos, conhecidos como DDS.
 
 ## Organização técnica
 O projeto foi desenvolvido por meio da utilização da linguagem Java com especificação para web, em resumo, pode-se afirmar que o projeto foi construído com as seguintes bases:
